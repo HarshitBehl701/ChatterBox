@@ -1,8 +1,8 @@
 const  mongoose  = require('mongoose');
 
 const userSchema =  mongoose.Schema({
-    unique_token:  {
-        type: String,
+    name: {
+        type: String
     },
     picture:{
         type: String,
@@ -10,7 +10,7 @@ const userSchema =  mongoose.Schema({
     email:{
         type: String,
     },
-    user_name:{
+    username:{
         type: String,
     },
     password: {
@@ -18,8 +18,15 @@ const userSchema =  mongoose.Schema({
     },
     status:{
         type: String,
-        enum: ['online','offline']
+        enum: ['online','offline'],
+        default: "offline"
     },
+    friendsList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:  'user'
+        }
+    ],
     is_active:{
         type: Number,
         enum:  [0,1],

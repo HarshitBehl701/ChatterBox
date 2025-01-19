@@ -1,68 +1,20 @@
 import React, { useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 
-function SendMessage() {
-  const [message, setMessage] = useState("");
+function SendMessage({ handleMessageInputEvent, handleSendMessage, message, setMessage }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [attachments, setAttachments] = useState([]);
 
   const handleEmojiClick = (emoji) => {
     setMessage((prevMessage) => prevMessage + emoji.emoji);
     setShowEmojiPicker(false);
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setAttachments((prev) => [...prev, ...files]);
-  };
-
   return (
-    <form>
+    <form onSubmit={(ev) => ev.preventDefault()}>
       <label htmlFor="chat" className="sr-only">
         Your message
       </label>
       <div className="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
-        {/* Attach  File Button */}
-        <label
-          htmlFor="fileInput"
-          className="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
-        >
-          <svg
-            className="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 18"
-          >
-            <path
-              fill="currentColor"
-              d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
-            />
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M18 1H2a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"
-            />
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
-            />
-          </svg>
-          <span className="sr-only">Upload image</span>
-        </label>
-        <input
-          id="fileInput"
-          type="file"
-          multiple
-          onChange={handleFileChange}
-          className="hidden"
-        />
-
         {/* Emoji Button */}
         <button
           type="button"
@@ -90,12 +42,7 @@ function SendMessage() {
         {/* Emoji Picker */}
         {showEmojiPicker && (
           <div className="absolute bottom-1 sm:scale-75 left-17 z-10">
-            <div className="cancelButton  flex justify-end">
-              <button className="text-2xl" onClick={handleEmojiClick}>
-                X
-              </button>
-            </div>
-            <EmojiPicker onEmojiClick={() => setShowEmojiPicker(false)} />
+            <EmojiPicker onEmojiClick={handleEmojiClick} />
           </div>
         )}
 
@@ -103,16 +50,17 @@ function SendMessage() {
         <textarea
           id="chat"
           rows="1"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleMessageInputEvent}
           className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
           placeholder="Your message..."
+          value={message}
         ></textarea>
 
         {/* Send Button */}
         <button
           type="submit"
           className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
+          onClick={handleSendMessage}
         >
           <svg
             className="w-5 h-5 rotate-90 rtl:-rotate-90"

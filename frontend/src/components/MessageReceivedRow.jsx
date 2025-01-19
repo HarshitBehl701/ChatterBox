@@ -4,7 +4,7 @@ function MessageReceivedRow({message}) {
   return (
     <div className="flex gap-4 items-start  my-2">
       <img
-        src="/assets/images/user.jpg"
+        src="/src/assets/images/user.jpg"
         alt="user"
         className="w-12 h-12 rounded-full"
       />

@@ -10,7 +10,7 @@ function MessageSendRow({message}) {
         <div className="absolute top-3 right-[-8px] w-4 h-4 bg-gray-100 rotate-45"></div>
       </div>
       <img
-        src="/assets/images/user.jpg"
+        src="/src/assets/images/user.jpg"
         alt="user"
         className="w-12 h-12 rounded-full"
       />

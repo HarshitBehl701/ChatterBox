@@ -6,7 +6,7 @@ function FriendsList() {
       <div className="twoSectionLayout mb-3   pb-2  border-b  border-gray-400  flex  items-center justify-between">
         <div className="leftSection flex  gap-3 items-center">
           <img
-            src="/assets/images/user.jpg"
+            src="/src/assets/images/user.jpg"
             alt="user"
             className="w-10 h-10  rounded-full"
           />

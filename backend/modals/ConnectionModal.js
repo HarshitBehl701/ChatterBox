@@ -1,24 +1,17 @@
-const  mongoose = require('mongoose');
+const mongoose  = require('mongoose');
 
-const connectionSchema =  mongoose.Schema({
-    room_id:{
+const connectionSchema = mongoose.Schema({
+    username:  {
         type: String,
-        ref: 'room'
     },
-    user_unique_token:{
+    socketId: {
         type:  String,
-        ref: 'user',
-    },
-    status:{
-        type:  String,
-        enum: ['request','joined','rejected','leave'],
-        default: 'request'
     },
     is_active:{
         type:  Number,
         enum: [0,1],
         default: 1
     }
-},{timestamps: true});
+},{timeStamps: true});
 
-module.exports  =  mongoose.model('connection',connectionSchema);
+module.exports  = mongoose.model('connection',connectionSchema);

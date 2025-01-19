@@ -1,20 +1,17 @@
 const mongoose  = require('mongoose');
 
-const chatSchema  = mongoose.Schema({
-    sender_unique_id:  {
+const friendRequestSchema  = mongoose.Schema({
+    request_sent_by_user_id:  {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
-    receiver_unique_id:  {
+    request_sent_to_user_id:  {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
-    },
-    message:{
-        type:  String
     },
     status:{
         type: String,
-        enum:  ['sent','delivered','read'],
+        enum:  ['request','accepted','rejected'],
     },
     is_active:{
         type:  Number,
@@ -23,4 +20,4 @@ const chatSchema  = mongoose.Schema({
     }
 },{timestamps: true});
 
-module.exports = mongoose.model('chat',chatSchema);
+module.exports = mongoose.model('friendRequest',friendRequestSchema);

@@ -45,7 +45,7 @@ function Navbar() {
               </button>
               <Link to="/profile" className="flex ms-2 md:me-24">
                 <img
-                  src="/assets/images/logo.jpg"
+                  src="/src/assets/images/logo.jpg"
                   className="h-10 me-3 rounded-full"
                   alt="FlowBite Logo"
                 />
@@ -74,9 +74,9 @@ function Navbar() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
@@ -94,7 +94,7 @@ function Navbar() {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="w-8 h-8 rounded-full"
-                      src="/assets/images/user.jpg"
+                      src="/src/assets/images/user.jpg"
                       alt="user photo"
                     />
                   </button>
@@ -109,15 +109,9 @@ function Navbar() {
                         className="text-sm text-gray-900 dark:text-white"
                         role="none"
                       >
-                        Neil Sims
+                      {localStorage.getItem('user_name')}
                       </p>
-                      <p
-                        className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-                        role="none"
-                      >
-                        neil.sims@flowbite.com
-                      </p>
-                    </div>
+                  </div>
                     <ul className="py-1" role="none">
                       <li>
                         <Link

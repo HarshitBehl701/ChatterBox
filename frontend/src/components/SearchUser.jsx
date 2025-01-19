@@ -1,17 +1,30 @@
 import React, { useState } from "react";
+import  {Link} from  "react-router-dom"
+import  {getAllUsers}   from "../api/user";
 
 function SearchUser({ midScreen }) {
   const [searchText, setSearchText] = useState("");
+  const [usersData,setUsersData] = useState([]);
 
-  const users = ["User 1", "User 2", "User 3", "User 4", "User 5"];
-
-  const filteredUsers = users.filter((user) =>
-    user.toLowerCase().includes(searchText.toLowerCase().trim())
+  const filteredUsers = usersData.filter((user) =>
+    user.name.toLowerCase().includes(searchText.toLowerCase().trim()) ||
+    user.username.toLowerCase().includes(searchText.toLowerCase().trim())
   );
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
   };
+
+  const  handleInputClickEvent  = async () => {
+    try{
+      const response   = await getAllUsers();
+      if(response.status && response.data.length > 0){
+        setUsersData(response.data);
+      }
+    }catch(error){
+      console.log(error.message)
+    }
+  }
 
   return (
     <div
@@ -50,6 +63,7 @@ function SearchUser({ midScreen }) {
         placeholder="Search User..."
         value={searchText}
         onChange={handleInputChange} // Track input changes
+        onClick={handleInputClickEvent}
       />
       {/* Conditionally render the "search results" div */}
       {searchText && (
@@ -60,12 +74,24 @@ function SearchUser({ midScreen }) {
           <ul className="mt-2 space-y-1">
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
+                <Link
+                to={`/profile/${encodeURIComponent(user.username)}`}
+                key={index}
+                >
                 <li
-                  key={index}
                   className="p-2 bg-gray-200 dark:bg-gray-600 rounded-lg"
                 >
-                  {user}
+                  <div className="twoSectionLayout  flex  items-center gap-3">
+                    <div className="leftSection">
+                        <img src={user?.picture ??  '/src/assets/images/user.jpg'} alt="userProfile" className="w-8  h-8  rounded-full" />
+                    </div>
+                    <div className="rightSection">
+                    <p className="text-sm font-semibold">{user?.name}</p>
+                    <p className="text-sm font-semibold">{user?.username}</p>
+                    </div>
+                  </div>
                 </li>
+                </Link>
               ))
             ) : (
               <li className="p-2 text-gray-500 dark:text-gray-400">
