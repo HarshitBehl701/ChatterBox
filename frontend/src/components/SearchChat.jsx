@@ -1,20 +1,12 @@
 import React from "react";
 
-function SearchChat({previousChatsList,userChats,setUserChats}) {
+function SearchChat({previousChats,setUserChats}) {
 
   const handleInputChange = (e) => {
-    const newChats  = userChats.filter((val)=> {
-      if(val.name.includes(e.target.value.trim()) || val.username.includes(e.target.value.trim())){
-        return   true;
-      }
-      return false;
+    const newChats  = previousChats.filter((val)=> {
+      return val.name.toLowerCase().indexOf(e.target.value.trim().toLowerCase()) !=  -1 || val.username.toLowerCase().indexOf(e.target.value.trim().toLowerCase()) !=  -1 || e.target.value  == '';
     })
-    setUserChats(newChats);
-    
-    if(e.target.value   ==  ''){
-      setUserChats(previousChatsList)
-    }
-    
+    setUserChats(newChats);    
   };
 
   return (

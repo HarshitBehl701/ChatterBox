@@ -8,13 +8,19 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import IsLoggedIn from "./components/IsLoggedIn";
 import Logout from "./components/Logout";
+import Groups from "./pages/Groups";
+import GroupChat from "./pages/GroupChat";
+import GroupDetail from "./pages/GroupDetail";
 
 function App() {
   return (
     <Routes>
       {/* Protected Routes */}
       <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      <Route path="/chat/:username?" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+      <Route path="/groups" element={<ProtectedRoute><Groups /></ProtectedRoute>} />
+      <Route path="/group_chat/:groupname" element={<ProtectedRoute><GroupChat /></ProtectedRoute>} />
+      <Route path="/group_detail/:groupname" element={<ProtectedRoute><GroupDetail /></ProtectedRoute>} />
+      <Route path="/chat/:username" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
       <Route path="/profile/:username?" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/logout" element={<Logout />} />
 

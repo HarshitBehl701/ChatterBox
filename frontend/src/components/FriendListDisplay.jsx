@@ -34,9 +34,9 @@ function FriendListDisplay({ friendRequests,friendsList }) {
             <div className="twoSection flex items-center gap-4">
               <div className="leftSection  w-24">
                 <img
-                  src={val?.request_sent_by_user_id?.picture ?? "/src/assets/images/user.jpg"}
+                  src={(val?.request_sent_by_user_id?.picture  && `/src/assets/images/profilePicture/${val?.request_sent_by_user_id?.picture}`) ?? "/src/assets/images/user.jpg"}
                   alt="userProfile"
-                  className="w-20 h-20 rounded-full"
+                  className="w-20 h-20 rounded-full   object-cover"
                 />
               </div>
               <div className="rightSection  w-full">
@@ -74,9 +74,9 @@ function FriendListDisplay({ friendRequests,friendsList }) {
             <div className="twoSection flex items-center gap-4">
               <div className="leftSection  w-24">
                 <img
-                  src={val?.friendDetails?.picture ?? "/src/assets/images/user.jpg"}
+                  src={(val?.friendDetails?.picture && `/src/assets/images/profilePicture/${val?.friendDetails?.picture}`) ?? "/src/assets/images/user.jpg"}
                   alt="userProfile"
-                  className="w-20 h-20 rounded-full"
+                  className="w-20 h-20 rounded-full   object-cover"
                 />
               </div>
               <div className="rightSection  w-full">

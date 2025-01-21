@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideNavbar from "./SideNavbar";
 import { Link } from "react-router-dom";
 import SearchUser from "./SearchUser";
+import { getUserProfilePicture } from "../api/user";
 
 function Navbar() {
   const [isProfileBtnOpen, setIsProfileBtnOpen] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [currentUserProfilePicture,setCurrentProfilePicture]  = useState("")
+
+  useEffect(()=>{
+
+    const main = async () => {
+      try{
+        const  response   = await getUserProfilePicture(localStorage.getItem('token'),localStorage.getItem('user_name'),localStorage.getItem('user_name'));
+        if(response.status){
+          setCurrentProfilePicture(response.data);
+        }
+
+      }catch(error){
+        console.log(error.message)
+      }
+    }
+
+    main()
+
+  },[]);
 
   const handleProfileBtnClick = () => {
     setIsProfileBtnOpen((prev) => (prev ? false : true));
@@ -93,8 +113,8 @@ function Navbar() {
                   >
                     <span className="sr-only">Open user menu</span>
                     <img
-                      className="w-8 h-8 rounded-full"
-                      src="/src/assets/images/user.jpg"
+                      className="w-8 h-8 rounded-full object-cover"
+                      src={(currentUserProfilePicture && `/src/assets/images/profilePicture/${currentUserProfilePicture}`) || "/src/assets/images/user.jpg"}
                       alt="user photo"
                     />
                   </button>
@@ -124,7 +144,7 @@ function Navbar() {
                       </li>
                       <li>
                         <Link
-                          to="/edit-profile"
+                          to="/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                           role="menuitem"
                         >

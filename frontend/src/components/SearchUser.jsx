@@ -83,7 +83,7 @@ function SearchUser({ midScreen }) {
                 >
                   <div className="twoSectionLayout  flex  items-center gap-3">
                     <div className="leftSection">
-                        <img src={user?.picture ??  '/src/assets/images/user.jpg'} alt="userProfile" className="w-8  h-8  rounded-full" />
+                        <img src={(user?.picture &&  `/src/assets/images/profilePicture/${user?.picture}`) ??  '/src/assets/images/user.jpg'} alt="userProfile" className="w-8  h-8  rounded-full" />
                     </div>
                     <div className="rightSection">
                     <p className="text-sm font-semibold">{user?.name}</p>

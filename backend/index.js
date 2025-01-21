@@ -22,7 +22,8 @@ const io = new Server(server, {
     },
 });
 
-const {handleSendMessage,handleUserDisconnect}  = require('./sockets/controllers/userSocket');
+const {handleUserChatSendMessage,handleUserDisconnect}  = require('./sockets/controllers/userSocket');
+const {handleGroupJoin,handleGroupChatSendMessage}  = require('./sockets/controllers/groupSocket');
 const socketMiddleware =  require('./sockets/middlewares/socketMiddleware');
 
 // Socket.IO
@@ -30,14 +31,21 @@ io.use(socketMiddleware);
 
 io.on("connection",(socket) => {
 
-    socket.on('send_message',(data)  => handleSendMessage(socket,data,io));
-
+    socket.on('send_user_chat_message',(data)  => handleUserChatSendMessage(socket,data,io));
+    
+    socket.on('group_join',(data) => handleGroupJoin(socket,data));
+    
+    socket.on('send_group_chat_message',(data)  => handleGroupChatSendMessage(socket,data,io));
+    
     socket.on('disconnect', handleUserDisconnect);
 
 })
 
 // Http Requests
 const userRouter =  require('./routers/userRouter');
+const groupRouter =  require('./routers/groupRouter');
+
 app.use("/v1/user",userRouter);
+app.use("/v1/group",groupRouter);
 
 server.listen(process.env.PORT);

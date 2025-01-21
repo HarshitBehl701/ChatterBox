@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 
-function SendMessage({ handleMessageInputEvent, handleSendMessage, message, setMessage }) {
+function SendMessage({ handleMessageInputEvent, handleSendMessage, message, setMessage,isSendMessageBtnHidden}) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleEmojiClick = (emoji) => {
@@ -54,10 +54,11 @@ function SendMessage({ handleMessageInputEvent, handleSendMessage, message, setM
           className="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
           placeholder="Your message..."
           value={message}
+          readOnly={isSendMessageBtnHidden}
         ></textarea>
 
         {/* Send Button */}
-        <button
+        {!isSendMessageBtnHidden  &&  <button
           type="submit"
           className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600"
           onClick={handleSendMessage}
@@ -72,7 +73,7 @@ function SendMessage({ handleMessageInputEvent, handleSendMessage, message, setM
             <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z" />
           </svg>
           <span className="sr-only">Send message</span>
-        </button>
+        </button>}
       </div>
     </form>
   );

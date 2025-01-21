@@ -12,6 +12,6 @@ const connectionSchema = mongoose.Schema({
         enum: [0,1],
         default: 1
     }
-},{timeStamps: true});
+},{timestamps: true});
 
 module.exports  = mongoose.model('connection',connectionSchema);

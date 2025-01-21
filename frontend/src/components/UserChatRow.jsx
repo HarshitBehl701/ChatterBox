@@ -7,9 +7,9 @@ function UserChatRow({data}) {
     <div className="twoSectionLayout border-b mb-4 border-gray-700 pb-2  flex gap-5">
       <div className="leftSection w-24">
         <img
-          src={data.picture   ?? "/src/assets/images/user.jpg"}
+          src={(data.picture  &&  `/src/assets/images/profilePicture/${data.picture}`)   ?? "/src/assets/images/user.jpg"}
           alt="userimage"
-          className="w-20 h-20 rounded-full border-2 border-gray-600"
+          className="w-20 h-20 rounded-full object-cover border-2 border-gray-600"
         />
       </div>
       <div className="rightSection  w-full  pt-2 pr-4">

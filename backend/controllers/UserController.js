@@ -1,10 +1,13 @@
 const bcrypt = require('bcrypt');
 const UserModal =  require('../modals/UserModal');
+const GroupModal =  require('../modals/GroupModal');
 const FriendRequestModal =  require('../modals/FriendRequestModal');
 const ChatsModal = require('../modals/ChatsModal');
+const fs = require("fs");
+const path = require("path");
 const  jwt  =  require('jsonwebtoken');
 
-//for  user   registration
+
 const registerUser  = async  (req,res)  => {
     try{ 
         const  {name,email,username,password} = req.body;
@@ -15,7 +18,7 @@ const registerUser  = async  (req,res)  => {
             $or: [
                 { email: email },
                 { username: username }
-            ]
+            ],is_active: 1
         });
 
         if (userExists) {
@@ -40,7 +43,7 @@ const  loginUser = async (req,res)  =>  {
     try{ 
         const  {username,password} = req.body;
 
-        const user = await UserModal.findOne({username});
+        const user = await UserModal.findOne({username,is_active: 1});
 
         const is_password_match  = await bcrypt.compare(password,user.password);
 
@@ -58,9 +61,112 @@ const  loginUser = async (req,res)  =>  {
     }
 }
 
+const  markUserOffline = async  (req,res)  =>{
+    try{
+
+        const user = await  UserModal.findOneAndUpdate({_id:req.userId,username: req.userName,is_active: 1},{status:  "offline"},{new:  true});
+
+        if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
+
+        return  res.status(200).send({message: "Profile Updated  Successfully",status:true});
+
+    }catch(error){
+        return  res.status(500).send({message: error.message,status:false});
+    }
+}
+
+const  markUserOnline = async  (req,res)  =>{
+    try{
+
+        const user = await  UserModal.findOneAndUpdate({_id:req.userId,username: req.userName,is_active: 1},{status:  "online"},{new:  true});
+
+        if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
+
+        return  res.status(200).send({message: "Profile Updated  Successfully",status:true});
+
+    }catch(error){
+        return  res.status(500).send({message: error.message,status:false});
+    }
+}
+
+const updateUserProfile  = async  (req,res) =>{
+    try{
+        const  {name , username} = req.body
+
+        const user = await  UserModal.findOneAndUpdate({_id:req.userId,username: req.userName,is_active: 1},{name:  name},{new:  true});
+
+        if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
+
+        if(user.username !== username){
+            const isUserNameExists =  await  UserModal.findOne({username: username});
+
+            if(isUserNameExists._id   !==   user._id){
+                return  res.status(400).send({message:  "Username already Exists",status: false});
+            }
+
+            user.username  = username;
+        }
+
+        await  user.save();
+
+        return  res.status(200).send({message: "Profile Updated  Successfully",status:true});
+
+    }catch(error){
+        return  res.status(500).send({message: error.message,status:false});
+    }
+}
+
+const  getUserProfilePicture =  async  (req,res) =>   {
+    try{
+
+        const {username} = req.body;
+
+        const user  =  await UserModal.findOne({username: username,is_active: 1});
+
+        if(!user)
+            return res.status(409).send({message: "User Not  Found",status: false});
+
+        return res.status(200).send({message: "Resource  Found Successfully",status: true,data: user.picture});
+
+    }catch(error){
+        return    res.status(500).send({message: error.message,status:false});
+    }
+} 
+
+const  updateProfilePicture  = async (req,res) => {
+    try{
+
+        const user = await  UserModal.findOne({_id:req.userId,username: req.userName,is_active: 1});
+
+        if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
+
+        if(user.picture   && user.picture != req.storedFileName){
+            
+            const oldPicturePath = path.resolve(process.cwd(),"../frontend/src/assets/images/profilePicture",user.picture).trim();
+            
+            if (fs.existsSync(oldPicturePath)) {
+                try {
+                    fs.unlinkSync(oldPicturePath);
+                } catch (unlinkErr) {
+                    console.error("Error removing old file:", unlinkErr.message);
+                }
+            }
+            
+        }
+
+        user.picture = req.storedFileName;
+        await user.save();
+
+        return  res.status(200).send({message: "Profile Picture  Updated  Successfully",status:true});
+
+    }catch(error){
+        return  res.status(500).send({message: error.message,status:false});
+    }
+}
+
 const getOwnProfileDetails  = async   (req,res) => {
     try{
-        const user = await  UserModal.findOne({_id:req.userId,username: req.userName});
+        const user = await  UserModal.findOne({_id:req.userId,username: req.userName,is_active: 1});
 
         if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
         
@@ -94,6 +200,7 @@ const getOwnProfileDetails  = async   (req,res) => {
 
         const requiredData  = {
             name: user.name,
+            picture: user.picture,
             username: user.username,
             email: user.email,
             contact: user.contact,
@@ -110,7 +217,7 @@ const getOwnProfileDetails  = async   (req,res) => {
 
 const getUserFriendList =  async  (req,res) =>  {
     try{
-        const user = await  UserModal.findOne({_id:req.userId,username: req.userName});
+        const user = await  UserModal.findOne({_id:req.userId,username: req.userName,is_active: 1});
 
         if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
 
@@ -132,14 +239,45 @@ const getUserFriendList =  async  (req,res) =>  {
             } else if (friend.request_sent_to_user_id._id.toString() === user._id.toString()) {
               return friend.request_sent_by_user_id;
             }
-        });        
-
+        });      
+        
         return res.status(200).send({message:  "Resource Found  Successfully",status:true,data: friendsList});
 
     }catch(error){
         return  res.status(500).send({message:  error.message,status:false});
     }
 }   
+
+const  getUserAllGroups = async  (req,res) => {
+    try{
+        const user = await  UserModal.findOne({_id:req.userId,username: req.userName,is_active: 1});
+
+        if(!user) return   res.status(404).send({message:  "Some Unexpected  Error Occured",status:false});
+
+        const groups =  await  GroupModal.find({$or:  [
+            {members: user._id},
+            {adminUserId: user._id},
+        ] ,is_active:  1}).select(['name','adminUserId','status','picture']).populate({
+            path: 'adminUserId',
+            select: 'username name',
+        });
+
+        const requiredData  =  groups.map((val) =>  {
+            return  {
+              'groupId': val._id,
+              'groupName': val.name,
+              'groupPicture': val.picture,
+              'adminUsername': val.adminUserId.username,
+              'adminName': val.adminUserId.name,
+              'status': val.status,
+            }
+          })
+
+        return res.status(200).send({message:  "Resource Found  Successfully",status:true,data:requiredData});
+    }catch(error){
+        return  res.status(500).send({message:  error.message,status:false});
+    }
+}
 
 const getOtherProfileDetails  = async   (req,res) => {
     try{
@@ -153,6 +291,7 @@ const getOtherProfileDetails  = async   (req,res) => {
         
         const requiredData  = {
             name: user.name,
+            picture: user.picture,
             username: user.username,
             email: user.email,
             contact: user.contact,
@@ -173,6 +312,38 @@ const  getAllUsersList = async  (_,res) => {
         if(!users) return res.status(404).send({message: "Resource  Not  found",status:true,  data: []});
 
         const requiredData =  users.map((user) =>  ({
+            name: user.name, 
+            username: user.username, 
+            picture: user.picture, 
+        }));
+
+        return res.status(200).send({message: "Resource Fetch Successfully",status:true,data: requiredData});
+
+    }catch(error){
+        return  res.status(500).send({message: error.message,  status:false});
+    }
+}
+
+const  getAllUserListForAddingNewMembersToGroup = async  (req,res) => {
+    try{
+        const {groupName}  = req.body
+
+        const user = await  UserModal.findOne({_id:req.userId,username: req.userName,is_active: 1});        
+
+        const  allUsers = await UserModal.find({_id: {$ne: req.userId},is_active:  1});
+        
+        const group   = await GroupModal.findOne({name: groupName,adminUserId: req.userId, is_active: 1, status:  'active'})
+
+        if(!user || !allUsers || !group) return res.status(404).send({message: "Resource  Not  found",status:true,  data: []});
+
+        const  members = group.members;
+
+
+        const filteredUsers =  allUsers.filter((user) =>  {
+            return members.indexOf(user._id) == -1;
+        });
+
+        const requiredData =  filteredUsers.map((user) =>  ({
             name: user.name, 
             username: user.username, 
             picture: user.picture, 
@@ -293,4 +464,4 @@ const getChatsData  = async (req,res)   =>  {
     }
 }
 
-module.exports  = {registerUser,loginUser,getOwnProfileDetails,getUserFriendList,getOtherProfileDetails,getAllUsersList,addFriendUser,manageUserFriendList,getChatsData}
+module.exports  = {registerUser,loginUser,markUserOffline,markUserOnline,updateUserProfile,updateProfilePicture,getOwnProfileDetails,getUserFriendList,getUserAllGroups,getUserProfilePicture,getOtherProfileDetails,getAllUsersList,getAllUserListForAddingNewMembersToGroup,addFriendUser,manageUserFriendList,getChatsData}
