@@ -1,27 +1,20 @@
 import React from "react";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
-import { ToastContainer } from "react-toastify";
-import {manageGroupRequestsByAdmin}  from "../api/group";
+import { manageAllIncomingGroupRequestsComesFromUser } from "../helpers/groupHelpers";
 
-function RequestMemberListDisplay({data}) {
-  const  handleManageGroupJoinRequest =  async (action)  =>  {
-      try{
-        const response  =  await  manageGroupRequestsByAdmin(localStorage.getItem('token'),localStorage.getItem('user_name'),{
-          groupId:  data.groupId, 
-          username:  data.username, 
-          newStatus: action
-        })
-
-        if(response.status){
-          handleSuccess(`Successfully ${action} the join request`)
-        }else{
-          handleError(response.message);
-        }
-
-      }catch(error){
-        handleError(error.message);
-      }
-  }
+function RequestMemberListDisplay({ data }) {
+  const handleManageGroupJoinRequest = async (action) => {
+    const response = await manageAllIncomingGroupRequestsComesFromUser(
+      data.groupId,
+      data.username,
+      action
+    );
+    if (response.status) {
+      handleSuccess(`Successfully ${action} the join request`);
+    } else {
+      handleError(response.message);
+    }
+  };
 
   return (
     <div className="twoSectionLayout  my-3 flex items-center gap-5  pb-3  border-b border-gray-700">
@@ -38,22 +31,25 @@ function RequestMemberListDisplay({data}) {
             <p className="font-semibold text-sm">{data.username}</p>
           </div>
           <div className="rightSection w-1/3 flex items-center  justify-end  gap-3">
-              <button
-                className="font-semibold  bg-green-700 hover:bg-green-800 cursor-pointer text-xs rounded-md px-2 py-1"
-                onClick={() => {handleManageGroupJoinRequest('accept')}}
-               >
-                Accept  Join   Request
-              </button>
-               <button
-                className="font-semibold  bg-red-700 hover:bg-red-800 cursor-pointer text-xs rounded-md px-2 py-1"
-                onClick={() => {handleManageGroupJoinRequest("rejected")}}
-              >
-                Reject  Join   Request
-              </button>
+            <button
+              className="font-semibold  bg-green-700 hover:bg-green-800 cursor-pointer text-xs rounded-md px-2 py-1"
+              onClick={() => {
+                handleManageGroupJoinRequest("accept");
+              }}
+            >
+              Accept Join Request
+            </button>
+            <button
+              className="font-semibold  bg-red-700 hover:bg-red-800 cursor-pointer text-xs rounded-md px-2 py-1"
+              onClick={() => {
+                handleManageGroupJoinRequest("rejected");
+              }}
+            >
+              Reject Join Request
+            </button>
           </div>
         </div>
       </div>
-      <ToastContainer   />
     </div>
   );
 }

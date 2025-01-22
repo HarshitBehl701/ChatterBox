@@ -1,25 +1,17 @@
 import React from 'react'
-import  {addNewMember}  from  "../api/group";
-import  {ToastContainer} from "react-toastify"
 import { handleError, handleSuccess } from '../helpers/toastHelpers';
+import { addMemberToGroup } from '../helpers/groupHelpers';
 
 function AddNewMemberList({picture,name,username,groupName}) {
     
     const  handleAddNewMember = async  () => {
         if (window.confirm(`Are you sure you  want to send ${groupName} join  request to ${username}`)) {
-            try{
-                const response = await addNewMember(localStorage.getItem('token'),localStorage.getItem('user_name'),{
-                    groupName:  groupName,
-                    username:  username
-                })
-                if(response.status){
-                    handleSuccess("Successfully Sent join  request");
-                    setTimeout(() => {window.location.reload()},1000);
-                }else{
-                    handleError(response.message)
-                }
-            }catch(error){
-                handleError(error.message)
+            const  response = await addMemberToGroup(username,groupName);
+            if(response.status){
+                handleSuccess("Successfully Sent join  request");
+                setTimeout(() => {window.location.reload()},1000);
+            }else{
+                handleError(response.message)
             }
         }
     }
@@ -42,7 +34,6 @@ function AddNewMemberList({picture,name,username,groupName}) {
             </div>
       </div>
       </div>
-      <ToastContainer />
     </div>
   )
 }

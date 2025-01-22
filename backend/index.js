@@ -11,14 +11,14 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(cors({
     origin: process.env.ALLOWED_ORIGIN,
-    methods: ["GET", "POST"],
+    methods: ["POST"],
 }))
 
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: process.env.ALLOWED_ORIGIN, // frontend origin allowed
-        methods: ["GET", "POST"],
+        methods: ["POST"],
     },
 });
 

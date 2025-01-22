@@ -3,6 +3,7 @@ const mongoose  =  require('mongoose');
 const groupSchema =  mongoose.Schema({
     name:  {
         type:  String,
+        unique:  true
     },
     adminUserId:  {
         type: mongoose.Schema.Types.ObjectId,

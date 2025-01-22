@@ -1,7 +1,7 @@
 import React from "react";
 import UserDisplay from "./UserDisplay";
 
-function UsersDisplayRow({friendsListData}) {
+function FriendsDisplayRow({friendsListData}) {
   return (
     <div className="userDisplaySection bg-black mb-5 border-b border-gray-600 p-3">
       <div className="userSliderContainer relative">
@@ -13,4 +13,4 @@ function UsersDisplayRow({friendsListData}) {
   );
 }
 
-export default UsersDisplayRow;
+export default FriendsDisplayRow;

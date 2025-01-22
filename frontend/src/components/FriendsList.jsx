@@ -1,5 +1,4 @@
 import React from "react";
-import  {ToastContainer} from "react-toastify";
 import { handleError } from "../helpers/toastHelpers";
 
 function FriendsList({picture,name,username,setMembersFn,currentMembers,isGroupNameSet}) {
@@ -40,7 +39,6 @@ function FriendsList({picture,name,username,setMembersFn,currentMembers,isGroupN
           </button>
         </div>
       </div>
-      <ToastContainer />
     </li>
   );
 }

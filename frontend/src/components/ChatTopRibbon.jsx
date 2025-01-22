@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { handleError } from "../helpers/toastHelpers";
-import { ToastContainer } from "react-toastify";
-import { getUserProfilePicture } from "../api/user";
+import { userPicture } from "../helpers/userHelpers";
 
 function ChatTopRibbon({username}) {
   const [userProfilePicture,setUserProfilePicture] = useState("");
@@ -10,16 +8,10 @@ function ChatTopRibbon({username}) {
   useEffect(()=>{
 
     const  main = async ()=>{
-      try{
+      const  response =  await   userPicture(username);
 
-          const response  = await getUserProfilePicture(localStorage.getItem('token'),localStorage.getItem("user_name"),username);
-
-          if(response.status)
-            setUserProfilePicture(response.data);
-
-      }catch(error){
-        handleError(error.message)
-      }
+      if(response.status)
+        setUserProfilePicture(response.data);
     }
 
     main();
@@ -49,7 +41,6 @@ function ChatTopRibbon({username}) {
         <p className="font-semibold">{username}</p>
       </div>
         </Link>
-        <ToastContainer />
     </div>
   );
 }

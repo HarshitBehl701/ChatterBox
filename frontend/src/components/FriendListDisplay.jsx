@@ -1,26 +1,15 @@
 import React from "react";
-import { ToastContainer } from "react-toastify";
 import  {handleError,handleSuccess} from   "../helpers/toastHelpers";
-import  {manageUserFriendList}  from  "../api/user";
 import { Link } from "react-router-dom";
+import { manageFriendsList } from "../helpers/userHelpers";
 
 function FriendListDisplay({ friendRequests,friendsList }) {
   const  handleManageFriendList = async  (setStatus,username,id) =>  {
-    try{
-      const response =  await manageUserFriendList(localStorage.getItem('token'),localStorage.getItem('username'),{
-        friendListFieldId: id,
-        setStatus: setStatus,
-        username: username,
-      })
-
-      if(!response.status){
-        handleError(response.message);
-      }else{
-        handleSuccess(`Successfully change  status to ${setStatus}`);
-      }
-
-    }catch(error){
-      handleError(error.message)
+    const  response  = await manageFriendsList(setStatus,username,id);
+    if(!response.status){
+      handleError(response.message);
+    }else{
+      handleSuccess(`Successfully change  status to ${setStatus}`);
     }
   }
 
@@ -97,7 +86,6 @@ function FriendListDisplay({ friendRequests,friendsList }) {
           </Link>
         ))}
       </ul>
-      <ToastContainer />
     </div>
   );
 }

@@ -2,30 +2,24 @@ import React, { useEffect, useState } from "react";
 import SideNavbar from "./SideNavbar";
 import { Link } from "react-router-dom";
 import SearchUser from "./SearchUser";
-import { getUserProfilePicture } from "../api/user";
+import { userPicture } from "../helpers/userHelpers";
+import { username } from "../helpers/commonHelper";
 
 function Navbar() {
   const [isProfileBtnOpen, setIsProfileBtnOpen] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [currentUserProfilePicture,setCurrentProfilePicture]  = useState("")
+  const [currentUserProfilePicture, setCurrentProfilePicture] = useState("");
 
-  useEffect(()=>{
-
+  useEffect(() => {
     const main = async () => {
-      try{
-        const  response   = await getUserProfilePicture(localStorage.getItem('token'),localStorage.getItem('user_name'),localStorage.getItem('user_name'));
-        if(response.status){
-          setCurrentProfilePicture(response.data);
-        }
-
-      }catch(error){
-        console.log(error.message)
+      const response = await userPicture(username);
+      if (response.status) {
+        setCurrentProfilePicture(response.data);
       }
-    }
+    };
 
-    main()
-
-  },[]);
+    main();
+  }, []);
 
   const handleProfileBtnClick = () => {
     setIsProfileBtnOpen((prev) => (prev ? false : true));
@@ -78,30 +72,32 @@ function Navbar() {
             <SearchUser midScreen="block" />
             <div className="flex items-center">
               <button
-              type="button"
-              data-collapse-toggle="navbar-search"
-              aria-controls="navbar-search"
-              aria-expanded="false"
-              className="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1"
-              onClick={() => setIsSideBarOpen((prev) => prev ? false  : true)}
-            >
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
+                type="button"
+                data-collapse-toggle="navbar-search"
+                aria-controls="navbar-search"
+                aria-expanded="false"
+                className="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1"
+                onClick={() =>
+                  setIsSideBarOpen((prev) => (prev ? false : true))
+                }
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-              <span className="sr-only">Search</span>
-            </button>
+                <svg
+                  className="w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+                <span className="sr-only">Search</span>
+              </button>
               <div className="flex items-center ms-3">
                 <div>
                   <button
@@ -114,7 +110,11 @@ function Navbar() {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="w-8 h-8 rounded-full object-cover"
-                      src={(currentUserProfilePicture && `/src/assets/images/profilePicture/${currentUserProfilePicture}`) || "/src/assets/images/user.jpg"}
+                      src={
+                        (currentUserProfilePicture &&
+                          `/src/assets/images/profilePicture/${currentUserProfilePicture}`) ||
+                        "/src/assets/images/user.jpg"
+                      }
                       alt="user photo"
                     />
                   </button>
@@ -129,9 +129,9 @@ function Navbar() {
                         className="text-sm text-gray-900 dark:text-white"
                         role="none"
                       >
-                      {localStorage.getItem('user_name')}
+                        {localStorage.getItem("user_name")}
                       </p>
-                  </div>
+                    </div>
                     <ul className="py-1" role="none">
                       <li>
                         <Link

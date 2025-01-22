@@ -3,12 +3,11 @@ import BaseLayout from "../layouts/BaseLayout";
 import SendMessage from "../components/SendMessage";
 import GroupChatRibbon from "../components/GroupChatRibbon";
 import { useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { handleError } from "../helpers/toastHelpers";
 import GroupMessageReceivedRow from "../components/GroupMessageReceivedRow";
 import GroupMessageSendRow from "../components/GroupMessageSendRow";
-import { getGroupChats } from "../api/group";
 import { getSocket } from "../helpers/socket";
+import { getGroupPreviousChats } from "../helpers/groupHelpers";
 
 function GroupChat() {
   const socket = getSocket("group");
@@ -19,28 +18,21 @@ function GroupChat() {
   const { groupname } = useParams();
   const messageEndRef = useRef(null);
   const [isSendMessageBtnHidden, setIsMessageBtnHidden] = useState(true);
-  const [groupPicture,setGroupPicture]   = useState('');
+  const [groupPicture, setGroupPicture] = useState("");
 
   useEffect(() => {
     const main = async () => {
-      try {
-        const groupChatsRespone = await getGroupChats(
-          localStorage.getItem("token"),
-          localStorage.getItem("user_name"),
-          groupname
-        );
+      const groupChatsRespone = await getGroupPreviousChats(groupname);
 
-        if (groupChatsRespone.status) {
-          setGroupMessages(groupChatsRespone.data.chats);
-          setGroupId(groupChatsRespone.data.groupId);
-          setGroupPicture(groupChatsRespone.data.picture);
-        } else {
-          handleError(groupChatsRespone.message);
-        }
-      } catch (error) {
-        handleError(error.message);
+      if (groupChatsRespone.status) {
+        setGroupMessages(groupChatsRespone.data.chats);
+        setGroupId(groupChatsRespone.data.groupId);
+        setGroupPicture(groupChatsRespone.data.picture);
+      } else {
+        handleError(groupChatsRespone.message);
       }
     };
+
     main();
   }, []);
 
@@ -54,11 +46,17 @@ function GroupChat() {
       groupId: groupId,
     });
 
-    socket.on("receive_group_chat_message", ({ username, picture,message}) => {
-      setMessages((prev) => {
-        return [...prev, { username: username, message: message , picture:  picture }]; //for  unique messages fetching  only
-      });
-    });
+    socket.on(
+      "receive_group_chat_message",
+      ({ username, picture, message }) => {
+        setMessages((prev) => {
+          return [
+            ...prev,
+            { username: username, message: message, picture: picture },
+          ]; //for  unique messages fetching  only
+        });
+      }
+    );
 
     return () => {
       socket.off("receive_group_chat_message");
@@ -83,7 +81,7 @@ function GroupChat() {
 
   return (
     <BaseLayout>
-      <GroupChatRibbon groupname={groupname}  groupPicture={groupPicture} />
+      <GroupChatRibbon groupname={groupname} groupPicture={groupPicture} />
       <div className="messageContainer md:h-[72vh] h-[80vh] mt-3 flex flex-col gap-4">
         <div className="messageArea border border-gray-700 bg-gray-800 p-4 rounded-lg overflow-y-auto scrollbar-hidden h-[65vh]">
           <div className="flex flex-col gap-2">
@@ -149,7 +147,6 @@ function GroupChat() {
           isSendMessageBtnHidden={isSendMessageBtnHidden}
         />
       </div>
-      <ToastContainer />
     </BaseLayout>
   );
 }

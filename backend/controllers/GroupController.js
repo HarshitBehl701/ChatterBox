@@ -22,7 +22,6 @@ const createGroup = async (req, res) => {
 
     const isGroupExistsWithSameName = await GroupModal.findOne({
       name: groupName,
-      adminUserId: user._id,
       is_active: 1,
     });
 
@@ -669,9 +668,9 @@ const groupJoinRequest  =  async  (req,res)  => {
         .status(409)
         .send({ message: "User Not  Found", status: false });
 
-      const {groupName,groupId} = req.body
+      const {groupName} = req.body
 
-    const group  = await   GroupModal.findOne({_id: groupId, name: groupName, status:  'active',is_active: 1});
+    const group  = await   GroupModal.findOne({name: groupName, status:  'active',is_active: 1});
 
 
     if(!group)

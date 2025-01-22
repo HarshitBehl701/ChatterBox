@@ -1,12 +1,12 @@
 import React from "react";
 
-function SearchChat({previousChats,setUserChats}) {
+function SearchFriendsList({originalList,filterFriendList}) {
 
   const handleInputChange = (e) => {
-    const newChats  = previousChats.filter((val)=> {
+    const newChats  = originalList.filter((val)=> {
       return val.name.toLowerCase().indexOf(e.target.value.trim().toLowerCase()) !=  -1 || val.username.toLowerCase().indexOf(e.target.value.trim().toLowerCase()) !=  -1 || e.target.value  == '';
     })
-    setUserChats(newChats);    
+    filterFriendList(newChats);    
   };
 
   return (
@@ -66,4 +66,4 @@ function SearchChat({previousChats,setUserChats}) {
   );
 }
 
-export default SearchChat;
+export default SearchFriendsList;

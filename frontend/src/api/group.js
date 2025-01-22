@@ -92,7 +92,6 @@ export const  manageGroupRequestsByAdmin  = async  (token,user_name,data) => {
      }
 }
 
-
 export const  manageGroupRequestsByUser  = async  (token,user_name,data) => {
     try{
         const response = await axios.post(`${groupBaseApi}/manage_group_requests_by_user`,{...data},{
@@ -167,12 +166,7 @@ export const  updateGroup  = async  (token,user_name,data) => {
 
 export const  updateGroupPicture  = async  (token,user_name,data) => {
     try{
-        
-        const formData = new FormData();
-        formData.append("groupPicture", data.file);
-        formData.append("groupName", data.groupName);
-
-        const response = await axios.post(`${groupBaseApi}/update_group_picture`,formData,{
+        const response = await axios.post(`${groupBaseApi}/update_group_picture`,data,{
             headers:{
                 Authorization: `Bearer ${token}`,
                 'X-User-Name': user_name,

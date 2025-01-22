@@ -40,7 +40,6 @@ const  getGroupChatsSchemaValidation  = Joi.object({
 })
 
 const  groupJoinRequestSchemaValidation  = Joi.object({
-    groupId: Joi.string().required(),
     groupName: Joi.string().min(1).required(),
 })
 

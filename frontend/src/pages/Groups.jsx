@@ -3,11 +3,11 @@ import BaseLayout from '../layouts/BaseLayout'
 import GroupDisplayRow from '../components/GroupDisplayRow'
 import SearchGroup from '../components/SearchGroup'
 import GroupRow from "../components/GroupRow";
-import  {getGroupRequestsToUsers} from "../api/group"
 import { handleError } from '../helpers/toastHelpers';
-import { getUserAllGroups } from '../api/user';
 import JoinGroupPopup from '../components/JoinGroupPopup';
 import CreateGroupPopup from '../components/CreateGroupPopup';
+import { getGroupAllIncomingRequestsUserGetsFromGroupAdmin } from '../helpers/groupHelpers';
+import { getUsersJoinGroupsList } from '../helpers/userHelpers';
 
 function Groups() {
   const [isGroupCreatePoupOpen,setIsGroupCreatePoupOpen] = useState(false)
@@ -19,26 +19,21 @@ function Groups() {
   useEffect(() => {
     
     const main   =  async  () => {
-        try{
-            const groupRequestsReceived  =  await  getGroupRequestsToUsers(localStorage.getItem('token'),localStorage.getItem('user_name'));
-            const userAllGroupsResponse = await  getUserAllGroups(localStorage.getItem('token'),localStorage.getItem('user_name'));
-            if(groupRequestsReceived.status){
-              setGroupRequests(groupRequestsReceived.data);
-            }else{
-              handleError(groupRequestsReceived.message);
-            }
+        const groupRequestsReceived  = await  getGroupAllIncomingRequestsUserGetsFromGroupAdmin();
+        const  userAllGroupsResponse  = await getUsersJoinGroupsList();
 
-            if(userAllGroupsResponse.status){
-              setUserGroups(userAllGroupsResponse.data);
-              setFilterGroups(userAllGroupsResponse.data);
-            }else{
-              handleError(userAllGroupsResponse.message);
-            }
-
-        }catch(error){
-          handleError(error.message);
+        if(groupRequestsReceived.status){
+          setGroupRequests(groupRequestsReceived.data);
+        }else{
+          handleError(groupRequestsReceived.message);
         }
 
+        if(userAllGroupsResponse.status){
+          setUserGroups(userAllGroupsResponse.data);
+          setFilterGroups(userAllGroupsResponse.data);
+        }else{
+          handleError(userAllGroupsResponse.message);
+        }
     }
 
     main();

@@ -1,30 +1,27 @@
 import React, { useState } from "react";
-import  {Link} from  "react-router-dom"
-import  {getAllUsers}   from "../api/user";
+import { Link } from "react-router-dom";
+import { getAllUsersList } from "../helpers/userHelpers";
 
 function SearchUser({ midScreen }) {
   const [searchText, setSearchText] = useState("");
-  const [usersData,setUsersData] = useState([]);
+  const [usersData, setUsersData] = useState([]);
 
-  const filteredUsers = usersData.filter((user) =>
-    user.name.toLowerCase().includes(searchText.toLowerCase().trim()) ||
-    user.username.toLowerCase().includes(searchText.toLowerCase().trim())
+  const filteredUsers = usersData.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchText.toLowerCase().trim()) ||
+      user.username.toLowerCase().includes(searchText.toLowerCase().trim())
   );
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
   };
 
-  const  handleInputClickEvent  = async () => {
-    try{
-      const response   = await getAllUsers();
-      if(response.status && response.data.length > 0){
-        setUsersData(response.data);
-      }
-    }catch(error){
-      console.log(error.message)
+  const handleInputClickEvent = async () => {
+    const response = await getAllUsersList();
+    if (response.status && response.data.length > 0) {
+      setUsersData(response.data);
     }
-  }
+  };
 
   return (
     <div
@@ -75,22 +72,30 @@ function SearchUser({ midScreen }) {
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
                 <Link
-                to={`/profile/${encodeURIComponent(user.username)}`}
-                key={index}
+                  to={`/profile/${encodeURIComponent(user.username)}`}
+                  key={index}
                 >
-                <li
-                  className="p-2 bg-gray-200 dark:bg-gray-600 rounded-lg"
-                >
-                  <div className="twoSectionLayout  flex  items-center gap-3">
-                    <div className="leftSection">
-                        <img src={(user?.picture &&  `/src/assets/images/profilePicture/${user?.picture}`) ??  '/src/assets/images/user.jpg'} alt="userProfile" className="w-8  h-8  rounded-full" />
+                  <li className="p-2 bg-gray-200 dark:bg-gray-600 rounded-lg">
+                    <div className="twoSectionLayout  flex  items-center gap-3">
+                      <div className="leftSection">
+                        <img
+                          src={
+                            (user?.picture &&
+                              `/src/assets/images/profilePicture/${user?.picture}`) ??
+                            "/src/assets/images/user.jpg"
+                          }
+                          alt="userProfile"
+                          className="w-8  h-8  rounded-full"
+                        />
+                      </div>
+                      <div className="rightSection">
+                        <p className="text-sm font-semibold">{user?.name}</p>
+                        <p className="text-sm font-semibold">
+                          {user?.username}
+                        </p>
+                      </div>
                     </div>
-                    <div className="rightSection">
-                    <p className="text-sm font-semibold">{user?.name}</p>
-                    <p className="text-sm font-semibold">{user?.username}</p>
-                    </div>
-                  </div>
-                </li>
+                  </li>
                 </Link>
               ))
             ) : (

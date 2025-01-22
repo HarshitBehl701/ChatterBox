@@ -1,7 +1,7 @@
 import React from "react";
 import  {Link} from  "react-router-dom";
 
-function UserChatRow({data}) {
+function UserFriendDisplayRow({data}) {
   return (
     <Link  to={`/chat/${encodeURIComponent(data.username)}`}>
     <div className="twoSectionLayout border-b mb-4 border-gray-700 pb-2  flex gap-5">
@@ -28,4 +28,4 @@ function UserChatRow({data}) {
   );
 }
 
-export default UserChatRow;
+export default UserFriendDisplayRow;

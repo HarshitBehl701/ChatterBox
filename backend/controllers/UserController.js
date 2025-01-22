@@ -456,10 +456,13 @@ const getChatsData  = async (req,res)   =>  {
         is_active:  1,
         }).select(['message','createdAt','status']).populate({path:   "sender_unique_id   receiver_unique_id", select: 'username picture'});
 
-        return  res.status(200).send({message: "Resource Fetch   Successfully",status:true,  data:  chats});
+        return  res.status(200).send({message: "Resource Fetch   Successfully",status:true,  data:  {
+            chats: chats,
+            friendProfilePicture: friendData.picture,
+            myProfilePicture: user.picture
+        }});
 
     }catch(error){
-        console.log(error);
         return res.status(500).send({message: error.message, status: false});
     }
 }

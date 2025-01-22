@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../api/user";
-import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
+import { ToastContainer } from "react-toastify";
+import { login } from "../helpers/userHelpers";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,21 +21,14 @@ const Login = () => {
 
   const handleFormSubmit = async (ev) => {
     ev.preventDefault();
-
-    try {
-      const response = await loginUser(formData);
-      if (response.status) {
-        handleSuccess(
-          "Successfully login to  you  account"
-        );
-        localStorage.setItem('token',response.data.token);
-        localStorage.setItem('user_name',response.data.username);
-        setTimeout(() => {navigate('/')},2000);
-      } else {
-        handleError(response.message);
-      }
-    } catch (error) {
-      handleError(error.message);
+    const response = await login(formData);
+    if (response.status) {
+      handleSuccess("Successfully login to  you  account");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } else {
+      handleError(response.message);
     }
   };
 
@@ -57,7 +50,7 @@ const Login = () => {
             </div>
             <h2 className="text-2xl font-semibold text-center">Login</h2>
           </div>
-          <form className="space-y-4"  onSubmit={handleFormSubmit}>
+          <form className="space-y-4" onSubmit={handleFormSubmit}>
             <div>
               <label htmlFor="username" className="block text-sm font-medium">
                 Username
@@ -100,8 +93,8 @@ const Login = () => {
             </Link>
           </p>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </>
   );
 };

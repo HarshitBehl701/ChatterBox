@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 
 function SendMessage({ handleMessageInputEvent, handleSendMessage, message, setMessage,isSendMessageBtnHidden}) {

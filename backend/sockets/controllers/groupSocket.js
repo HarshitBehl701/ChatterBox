@@ -32,14 +32,12 @@ const handleGroupJoin = async (socket, data) => {
     });
     
     if (!group) {
-      console.log("Group validation failed");
       socket.emit("error", { message: "Invalid Request" });
       return;
     }
 
     socket.join(groupId);
   } catch (error) {
-    console.error("Error during group join:", error.message);
     socket.emit("error", { message: `Internal Server Error: ${error.message}` });
   }
 };

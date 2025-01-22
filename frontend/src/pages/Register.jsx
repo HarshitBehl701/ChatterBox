@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {Link, useNavigate}  from "react-router-dom"
-import {registerUser}  from  "../api/user";
-import { ToastContainer } from 'react-toastify';
 import  {handleError,handleSuccess} from "../helpers/toastHelpers";
+import { ToastContainer } from "react-toastify";
+import {registration} from "../helpers/userHelpers";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -24,20 +24,13 @@ const Register = () => {
 
   const handleFormSubmit =  async (ev) => {
     ev.preventDefault();
-
-    try{
-      const  response  = await registerUser(formData);
-      if(response.status){
-        handleSuccess('Successfully registered  now  you  can  login  to your  account');
-        setTimeout(() => {navigate('/login')},2000);
-      }else{
-        handleError(response.message);
-      }
-      
-    }catch(error){
-      handleError(error.message);
+    const response =  await registration(formData);
+    if(response.status){
+      handleSuccess('Successfully registered  now  you  can  login  to your  account');
+      setTimeout(() => {navigate('/login')},2000);
+    }else{
+      handleError(response.message);
     }
-
   }
   
 

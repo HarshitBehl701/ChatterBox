@@ -1,41 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
-import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
-import { getOwnProfileDetails, getOtherUserProfile, updateUserProfile } from "../api/user";
-import   FriendListDisplay  from  "../components/FriendListDisplay";
-import ProfilePicture from '../components/ProfilePicture';
+import FriendListDisplay from "../components/FriendListDisplay";
+import ProfilePicture from "../components/ProfilePicture";
+import { username } from "../helpers/commonHelper";
+import {
+  getMyProfileDetail,
+  getProfileDetail,
+  updateUserProfileData,
+} from "../helpers/userHelpers";
 
 function Profile() {
-  const { username } = useParams();
-  const currentUserName = localStorage.getItem('user_name');
+  const { profileVisitUsername } = useParams();
+  const currentLogin_username = username;
   const [userData, setUserData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
     const main = async () => {
-      try {
-        const response = username
-          ? await getOtherUserProfile(localStorage.getItem('token'), localStorage.getItem('user_name'), username)
-          : await getOwnProfileDetails(localStorage.getItem('token'), localStorage.getItem('user_name'));
-        if (response.status) {
-          const data  = response.data;
-          setUserData(data);
-          setFormData({
-            name: data?.name || '',
-            username: data?.username  ||'',
-          });
-        } else {
-          handleError(response.message);
-        }
-      } catch (error) {
-        handleError(error.message);
+      const response = profileVisitUsername
+        ? await getProfileDetail(profileVisitUsername)
+        : await getMyProfileDetail();
+      if (response.status) {
+        const data = response.data;
+        setUserData(data);
+        setFormData({
+          name: data?.name || "",
+          username: data?.username || "",
+        });
+      } else {
+        handleError(response.message);
       }
     };
+
     main();
-  }, [username]);
+  }, [profileVisitUsername]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,25 +46,23 @@ function Profile() {
     setIsEditing(!isEditing);
     if (!isEditing) {
       setFormData({
-        name: userData?.name || '',
-        username: userData?.username  ||'',
+        name: userData?.name || "",
+        username: userData?.username || "",
       });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response =   await updateUserProfile(localStorage.getItem('token'),localStorage.getItem('user_name'),formData);
-      
-      if(response.status){
-        handleSuccess("Profile updated successfully");
-        setTimeout(() => {window.location.reload()},1000);
-      }else{
-        handleError(response.message);
-      }
-    } catch (error) {
-      handleError(error.message);
+    const response = await updateUserProfileData(formData);
+
+    if (response.status) {
+      handleSuccess("Profile updated successfully");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } else {
+      handleError(response.message);
     }
   };
 
@@ -71,7 +70,11 @@ function Profile() {
     <BaseLayout>
       <h1 className="mb-4 font-semibold text-2xl">User Profile</h1>
       <div className="flex flex-wrap  md:flex-nowrap gap-5">
-          <ProfilePicture currentUserName={currentUserName} username={username} picture={userData.picture}/>
+        <ProfilePicture
+          currentLogin_username={currentLogin_username}
+          username={profileVisitUsername}
+          picture={userData?.picture}
+        />
         <div className="rightSection shrink pt-4 md:pl-4">
           {isEditing ? (
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -116,9 +119,11 @@ function Profile() {
             <>
               <h2 className="text-xl mb-1">{userData?.name}</h2>
               <h3 className="mb-1">{userData?.username}</h3>
-              {username?.contact &&  <h3 className="mb-1">{userData?.contact}</h3>}
+              {username?.contact && (
+                <h3 className="mb-1">{userData?.contact}</h3>
+              )}
               <p className="mb-1">{userData?.email}</p>
-              {currentUserName == username && (
+              {currentLogin_username == profileVisitUsername && (
                 <button
                   onClick={handleEditToggle}
                   className="px-2 py-1 h-fit   font-semibold text-sm mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
@@ -130,10 +135,16 @@ function Profile() {
           )}
         </div>
       </div>
-        <br />
-{userData?.friendRequestReceived  && <div><hr className='border border-gray-800' />
-  <FriendListDisplay friendRequests={userData.friendRequestReceived} friendsList={userData.friendsList} /></div>}
-      <ToastContainer />
+      <br />
+      {userData?.friendRequestReceived && (
+        <div>
+          <hr className="border border-gray-800" />
+          <FriendListDisplay
+            friendRequests={userData.friendRequestReceived}
+            friendsList={userData.friendsList}
+          />
+        </div>
+      )}
     </BaseLayout>
   );
 }

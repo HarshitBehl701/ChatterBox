@@ -118,9 +118,9 @@ export const  updateUserProfile  = async  (token,user_name,data) => {
      }
 }
 
-export const  getUserProfilePicture  = async  (token,user_name,username) => {
+export const  getUserProfilePicture  = async  (token,user_name,usernameOfRequiredUser) => {
     try{
-        const response = await axios.post(`${userBaseApi}/get_user_profile_picture`,{username: username},{
+        const response = await axios.post(`${userBaseApi}/get_user_profile_picture`,{username: usernameOfRequiredUser},{
             headers:{
                 Authorization: `Bearer ${token}`,
                 'X-User-Name': user_name
@@ -136,13 +136,9 @@ export const  getUserProfilePicture  = async  (token,user_name,username) => {
      }
 }
 
-export const  updateProfilePicture  = async  (token,user_name,file) => {
+export const  updateProfilePicture  = async  (token,user_name,data) => {
     try{
-
-        const formData = new FormData();
-        formData.append("profilePicture", file);
-
-        const response = await axios.post(`${userBaseApi}/upload_profile_picture`,formData,{
+        const response = await axios.post(`${userBaseApi}/upload_profile_picture`,data,{
             headers:{
                 Authorization: `Bearer ${token}`,
                 'X-User-Name': user_name,
