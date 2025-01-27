@@ -16,7 +16,7 @@ const handleUserChatSendMessage = async (socket, data, io) => {
       is_active: 1,
     });
 
-    if (!receiverUser) {
+    if (!receiverUser || receiverUser.friendsList.indexOf(socket.userId) ==  -1) {
       return;
     }
 

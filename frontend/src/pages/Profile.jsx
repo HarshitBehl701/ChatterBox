@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
@@ -6,10 +6,12 @@ import FriendListDisplay from "../components/FriendListDisplay";
 import ProfilePicture from "../components/ProfilePicture";
 import { username } from "../helpers/commonHelper";
 import {
+  addNewFriend,
   getMyProfileDetail,
   getProfileDetail,
   updateUserProfileData,
 } from "../helpers/userHelpers";
+import { ToastContainer } from "react-toastify";
 
 function Profile() {
   const { profileVisitUsername } = useParams();
@@ -20,7 +22,7 @@ function Profile() {
 
   useEffect(() => {
     const main = async () => {
-      const response = profileVisitUsername
+      const response = profileVisitUsername  && profileVisitUsername  !==  currentLogin_username
         ? await getProfileDetail(profileVisitUsername)
         : await getMyProfileDetail();
       if (response.status) {
@@ -65,6 +67,25 @@ function Profile() {
       handleError(response.message);
     }
   };
+
+  console.log(userData)
+
+  const hanldeAddFriend  = useCallback(async () =>  {
+
+      try {
+        const  response =  await  addNewFriend(profileVisitUsername);
+
+        if(response.status){
+          handleSuccess(`Successfully sent  Friend  Request  To  ${profileVisitUsername}`);
+          setTimeout(() => {window.location.reload()},1000);
+        }else{
+          handleError(response.message)
+        }
+      } catch (error) {
+        handleError(error.message);
+      }
+
+  },[profileVisitUsername])  
 
   return (
     <BaseLayout>
@@ -123,7 +144,7 @@ function Profile() {
                 <h3 className="mb-1">{userData?.contact}</h3>
               )}
               <p className="mb-1">{userData?.email}</p>
-              {currentLogin_username == profileVisitUsername && (
+              {((currentLogin_username == profileVisitUsername) || (!profileVisitUsername && currentLogin_username)) && (
                 <button
                   onClick={handleEditToggle}
                   className="px-2 py-1 h-fit   font-semibold text-sm mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
@@ -131,6 +152,13 @@ function Profile() {
                   Edit Profile
                 </button>
               )}
+              {currentLogin_username   !=  profileVisitUsername  && userData?.friendStatus == false &&  <button
+                  onClick={hanldeAddFriend}
+                  className="px-2 py-1 h-fit   font-semibold text-sm mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                >
+                  Send Friend  Request
+                </button>}
+                {userData?.friendStatus !==   false && profileVisitUsername && profileVisitUsername !==  currentLogin_username  &&  <p  className="text-sm">Friendship  Status  :  {userData.friendStatus ==  'accepted'  ? "Friends" :  userData.friendStatus}</p>}
             </>
           )}
         </div>
@@ -145,6 +173,7 @@ function Profile() {
           />
         </div>
       )}
+      <ToastContainer  />
     </BaseLayout>
   );
 }

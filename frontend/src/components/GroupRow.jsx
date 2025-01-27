@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
 import { manageAllIncomingGroupRequestsComesFromGroupAdmin } from "../helpers/groupHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function GroupRow({ isRequestRow = false, data }) {
   const handleGroupRequest = async (action) => {
@@ -25,9 +26,8 @@ function GroupRow({ isRequestRow = false, data }) {
         <div className="leftSection w-24">
           <img
             src={
-              (data?.groupPicture &&
-                `/src/assets/images/groupPicture/${data?.groupPicture}`) ||
-              "/src/assets/images/user.jpg"
+              (data?.groupPicture &&  getPicturePath(data?.groupPicture,'group')) ||
+              getPicturePath()
             }
             alt="userimage"
             className="w-20 h-20 rounded-full border-2 border-gray-600"

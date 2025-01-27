@@ -534,7 +534,7 @@ const updateGroupPicture  = async   (req,res) => {
         .send({ message: "You Don't  have permissions to change this  group picture" });
 
     if(group.picture){
-      const oldPicturePath = path.resolve(process.cwd(),"../frontend/src/assets/images/groupPicture",group.picture).trim();
+      const oldPicturePath = path.resolve(process.cwd(),"./public/assets/images/groupPicture",group.picture).trim();
             
       if (fs.existsSync(oldPicturePath)) {
           try {

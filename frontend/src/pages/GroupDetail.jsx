@@ -11,6 +11,7 @@ import {
   manageGroupByAdmin,
   updateGroupName,
 } from "../helpers/groupHelpers";
+import { ToastContainer } from "react-toastify";
 
 function GroupDetail() {
   const [groupMembers, setGroupMembers] = useState([]);
@@ -33,6 +34,7 @@ function GroupDetail() {
         setGroupNameInputValue(data.groupDetail.name);
         setIsCurrentUserIsAdmin(data.is_current_user_is_Admin);
       } else {
+        navigate('/groups')
         handleError(groupMembersResponse.message);
       }
     };
@@ -226,6 +228,7 @@ function GroupDetail() {
           })}
         </div>
       </div>
+      <ToastContainer />
     </BaseLayout>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { userPicture } from "../helpers/userHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function ChatTopRibbon({username}) {
   const [userProfilePicture,setUserProfilePicture] = useState("");
@@ -34,7 +35,7 @@ function ChatTopRibbon({username}) {
       <Link to={`/profile/${encodeURIComponent(username)}`}>
       <div className="userDetail flex gap-4 items-center">
         <img
-          src={ (userProfilePicture && `/src/assets/images/profilePicture/${userProfilePicture}`) || "/src/assets/images/user.jpg"}
+          src={ (userProfilePicture && getPicturePath(userProfilePicture,'user')) || getPicturePath()}
           alt="user"
           className="w-10   h-10 rounded-full"
         />

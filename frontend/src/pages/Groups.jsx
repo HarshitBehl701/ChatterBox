@@ -8,6 +8,7 @@ import JoinGroupPopup from '../components/JoinGroupPopup';
 import CreateGroupPopup from '../components/CreateGroupPopup';
 import { getGroupAllIncomingRequestsUserGetsFromGroupAdmin } from '../helpers/groupHelpers';
 import { getUsersJoinGroupsList } from '../helpers/userHelpers';
+import { ToastContainer } from 'react-toastify';
 
 function Groups() {
   const [isGroupCreatePoupOpen,setIsGroupCreatePoupOpen] = useState(false)
@@ -58,6 +59,7 @@ function Groups() {
     </div>
     {isGroupCreatePoupOpen && <CreateGroupPopup setIsGroupCreatePoupOpen={setIsGroupCreatePoupOpen} />}
     {isGroupJoinPopupOpen && <JoinGroupPopup setIsGroupJoinPopupOpen={setIsGroupJoinPopupOpen} />}
+    <ToastContainer  />
     </BaseLayout>
   )
 }

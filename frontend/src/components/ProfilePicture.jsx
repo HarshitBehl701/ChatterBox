@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
 import { updateUserProfilePhoto } from "../helpers/userHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
-function ProfilePicture({ currentUserName, username, picture }) {
+function ProfilePicture({ currentLogin_username, username, picture }) {
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -39,14 +40,14 @@ function ProfilePicture({ currentUserName, username, picture }) {
         <img
           src={
             preview ||
-            (picture && `/src/assets/images/profilePicture/${picture}`) ||
-            "/src/assets/images/user.jpg"
+            (picture && getPicturePath(picture,'user')) ||
+            getPicturePath()
           }
           alt="user"
           className="w-full h-full object-cover"
         />
-        {currentUserName === username ||
-          (!username && currentUserName && (
+        {((currentLogin_username == username) ||
+          (!username && currentLogin_username)) && (
             <>
               <input
                 type="file"
@@ -63,7 +64,7 @@ function ProfilePicture({ currentUserName, username, picture }) {
                 Change Picture
               </label>
             </>
-          ))}
+          )}
       </div>
       {selectedFile && (
         <button

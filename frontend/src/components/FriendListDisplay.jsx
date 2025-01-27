@@ -2,6 +2,7 @@ import React from "react";
 import  {handleError,handleSuccess} from   "../helpers/toastHelpers";
 import { Link } from "react-router-dom";
 import { manageFriendsList } from "../helpers/userHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function FriendListDisplay({ friendRequests,friendsList }) {
   const  handleManageFriendList = async  (setStatus,username,id) =>  {
@@ -10,6 +11,7 @@ function FriendListDisplay({ friendRequests,friendsList }) {
       handleError(response.message);
     }else{
       handleSuccess(`Successfully change  status to ${setStatus}`);
+      setTimeout(()  =>{window.location.reload()},1000)
     }
   }
 
@@ -23,7 +25,7 @@ function FriendListDisplay({ friendRequests,friendsList }) {
             <div className="twoSection flex items-center gap-4">
               <div className="leftSection  w-24">
                 <img
-                  src={(val?.request_sent_by_user_id?.picture  && `/src/assets/images/profilePicture/${val?.request_sent_by_user_id?.picture}`) ?? "/src/assets/images/user.jpg"}
+                  src={(val?.request_sent_by_user_id?.picture  && getPicturePath(val?.request_sent_by_user_id?.picture,'user')) ?? getPicturePath()}
                   alt="userProfile"
                   className="w-20 h-20 rounded-full   object-cover"
                 />
@@ -63,7 +65,7 @@ function FriendListDisplay({ friendRequests,friendsList }) {
             <div className="twoSection flex items-center gap-4">
               <div className="leftSection  w-24">
                 <img
-                  src={(val?.friendDetails?.picture && `/src/assets/images/profilePicture/${val?.friendDetails?.picture}`) ?? "/src/assets/images/user.jpg"}
+                  src={(val?.friendDetails?.picture && getPicturePath(val?.friendDetails?.picture,'user')) ?? getPicturePath()}
                   alt="userProfile"
                   className="w-20 h-20 rounded-full   object-cover"
                 />

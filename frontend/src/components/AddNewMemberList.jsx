@@ -1,6 +1,7 @@
 import React from 'react'
 import { handleError, handleSuccess } from '../helpers/toastHelpers';
 import { addMemberToGroup } from '../helpers/groupHelpers';
+import { getPicturePath } from '../helpers/commonHelper';
 
 function AddNewMemberList({picture,name,username,groupName}) {
     
@@ -19,7 +20,7 @@ function AddNewMemberList({picture,name,username,groupName}) {
   return (
     <div className="userCont shrink-0 relative flex items-center gap-3  pb-2  border-b border-gray-500  mb-2  px-2">
       <img
-        src={(picture   && `/src/assets/images/profilePicture/${picture}`)  ?? "/src/assets/images/user.jpg"}
+        src={(picture   && getPicturePath(picture,'user'))  ?? getPicturePath()}
         alt="user"
         className="w-16  h-16 rounded-full object-cover border-2  border-gray-400"
       />

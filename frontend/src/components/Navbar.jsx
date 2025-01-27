@@ -3,7 +3,7 @@ import SideNavbar from "./SideNavbar";
 import { Link } from "react-router-dom";
 import SearchUser from "./SearchUser";
 import { userPicture } from "../helpers/userHelpers";
-import { username } from "../helpers/commonHelper";
+import { getPicturePath, username } from "../helpers/commonHelper";
 
 function Navbar() {
   const [isProfileBtnOpen, setIsProfileBtnOpen] = useState(false);
@@ -59,7 +59,7 @@ function Navbar() {
               </button>
               <Link to="/profile" className="flex ms-2 md:me-24">
                 <img
-                  src="/src/assets/images/logo.jpg"
+                  src="/assets/images/logo.jpg"
                   className="h-10 me-3 rounded-full"
                   alt="FlowBite Logo"
                 />
@@ -111,9 +111,8 @@ function Navbar() {
                     <img
                       className="w-8 h-8 rounded-full object-cover"
                       src={
-                        (currentUserProfilePicture &&
-                          `/src/assets/images/profilePicture/${currentUserProfilePicture}`) ||
-                        "/src/assets/images/user.jpg"
+                        (currentUserProfilePicture &&  getPicturePath(currentUserProfilePicture,'user')) ||
+                        getPicturePath()
                       }
                       alt="user photo"
                     />

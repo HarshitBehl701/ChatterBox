@@ -2,6 +2,7 @@ import React from "react";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
 import { addNewFriend } from "../helpers/userHelpers";
 import { manageGroupMembersByAdmin } from "../helpers/groupHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function MemberListDisplay({ groupname, data, isCurrentUserIsAdmin }) {
   const currentListUserName = data.username;
@@ -54,9 +55,8 @@ function MemberListDisplay({ groupname, data, isCurrentUserIsAdmin }) {
       <div className="leftSection  w-20 h-20  rounded-full overflow-hidden shrink-0">
         <img
           src={
-            (data.picture &&
-              `/src/assets/images/profilePicture/${data.picture}`) ||
-            "/src/assets/images/user.jpg"
+            (data.picture && getPicturePath(data.picture,'user')) ||
+            getPicturePath()
           }
           alt="user"
           className="w-full  h-full  object-cover"

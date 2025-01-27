@@ -1,35 +1,33 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import  {useNavigate} from  "react-router-dom"
 import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from '../helpers/toastHelpers';
-import { setUserOffline } from '../helpers/userHelpers';
+import { handleUserLogout } from '../helpers/commonHelper';
 
 function Logout() {
-    const navigate = useNavigate();
-    let  runOnce  =  false;
+    const  navigate  = useNavigate();
+    const  token  = localStorage.getItem("token");
     useEffect(() => {
+    if(!token)   navigate('/login');
+    const main  = async ()  => {
+        const response   = await handleUserLogout();
+        if(response.status){
+            handleSuccess('Successfully logged you out');
+            const timer = setTimeout(() => {
+                navigate('/login');
+            }, 2000);
 
-        const main  = async ()  => {
-            if (runOnce  == false) {
-                const response   = await setUserOffline();
-                if(response.status){
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user_name');
-                    handleSuccess('Successfully logged you out');
-                    runOnce =  true;
-                    const timer = setTimeout(() => {
-                        navigate('/login');
-                    }, 2000);
-
-                    return () => clearTimeout(timer);
-                }else{
-                    handleError(response.message);
-                }
-            }
+            return () => clearTimeout(timer);
+        }else{
+            const timer = setTimeout(() => {
+                navigate('/login');
+            }, 2000);
+            handleError(response.message);
         }
+    }
 
         main();
-    }, [navigate]);
+    }, []);
 
     return (
         <>

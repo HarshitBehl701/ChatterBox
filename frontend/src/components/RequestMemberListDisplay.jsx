@@ -1,6 +1,7 @@
 import React from "react";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
 import { manageAllIncomingGroupRequestsComesFromUser } from "../helpers/groupHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function RequestMemberListDisplay({ data }) {
   const handleManageGroupJoinRequest = async (action) => {
@@ -20,7 +21,7 @@ function RequestMemberListDisplay({ data }) {
     <div className="twoSectionLayout  my-3 flex items-center gap-5  pb-3  border-b border-gray-700">
       <div className="leftSection">
         <img
-          src="/src/assets/images/user.jpg"
+          src={data?.picture ?  getPicturePath(data.picture,'user') :  getPicturePath()}
           alt="user"
           className="w-20 h-20 rounded-full"
         />

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import  {getPicturePath} from "../helpers/commonHelper";
 
 function UserDisplay({data,status}) {
   return (
@@ -7,7 +8,7 @@ function UserDisplay({data,status}) {
     <div className="userCont shrink-0 relative flex flex-col  items-center justify-center">
       <div className="relative">
       <img
-        src={(data.picture   && `/src/assets/images/profilePicture/${data.picture}`)  ?? "/src/assets/images/user.jpg"}
+        src={(data.picture   && getPicturePath(data.picture,'user'))  ?? getPicturePath()}
         alt="user"
         className="w-20  h-20 rounded-full object-cover border-2  border-gray-400"
       />

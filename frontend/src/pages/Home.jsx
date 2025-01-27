@@ -5,10 +5,9 @@ import FriendsDisplayRow from "../components/FriendsDisplayRow";
 import SearchFriendsList from "../components/SearchFriendsList";
 import { handleError } from "../helpers/toastHelpers";
 import { getUsersFriends } from "../helpers/userHelpers";
-import { useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 function Home() {
-  const location = useLocation();
   const [tempFriendListDataStore, setTempFriendListDataStore] = useState([]);
   const [friendsListData, setFriendsListData] = useState([]);
 
@@ -23,7 +22,7 @@ function Home() {
       }
     };
     main();
-  }, [location]);
+  }, []);
 
   return (
     <>
@@ -44,6 +43,7 @@ function Home() {
             <p className="italic font-light">No Chats...</p>
           )}
         </div>
+        <ToastContainer />
       </BaseLayout>
     </>
   );

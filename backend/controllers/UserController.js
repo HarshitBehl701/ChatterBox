@@ -142,7 +142,7 @@ const  updateProfilePicture  = async (req,res) => {
 
         if(user.picture   && user.picture != req.storedFileName){
             
-            const oldPicturePath = path.resolve(process.cwd(),"../frontend/src/assets/images/profilePicture",user.picture).trim();
+            const oldPicturePath = path.resolve(process.cwd(),"./public/assets/images/profilePicture",user.picture).trim();
             
             if (fs.existsSync(oldPicturePath)) {
                 try {
@@ -434,14 +434,20 @@ const  manageUserFriendList =  async  (req,res) =>   {
     }
 }
 
-const getChatsData  = async (req,res)   =>  {
+const getChatsData  = async (req,res)   =>  {    
     try{
         const {friendUserName} = req.body;
         
         const  user =  await   UserModal.findOne({_id: req.userId,username:  req.userName,is_active: 1});
         const friendData = await  UserModal.findOne({username: friendUserName,is_active: 1})
 
+        console.log(user)
+        console.log(friendData)
+
         if(!user  || !friendData)  return  res.status(409).send({message: "User  Not Found",status:false});
+        else  if(friendData.friendsList.indexOf(user._id) == -1){
+            return res.status(400).send({message: "User  Not  in  your  friend  list , please  add him/her  to  your friend list first",status:false});
+        }
 
         const chats  = await ChatsModal.find({  $or  : [
             {

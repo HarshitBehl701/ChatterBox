@@ -1,10 +1,11 @@
 import React from "react";
+import {getPicturePath}  from "../helpers/commonHelper";
 
 function MessageReceivedRow({message,profilePicture}) {
   return (
     <div className="flex gap-4 items-start  my-2">
       <img
-        src={(profilePicture &&  `/src/assets/images/profilePicture/${profilePicture}`) || "/src/assets/images/user.jpg"}
+        src={(profilePicture &&  getPicturePath(profilePicture,'user')) || getPicturePath()}
         alt="user"
         className="w-12 h-12 rounded-full"
       />

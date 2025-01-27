@@ -39,7 +39,7 @@ const Login = () => {
           <div className="header flex  justify-between items-center">
             <div className="brandHeader flex items-center gap-4">
               <img
-                src="/src/assets/images/logo.jpg"
+                src="/assets/images/logo.jpg"
                 alt="logo"
                 className="w-12 h-12 rounded-full"
               />

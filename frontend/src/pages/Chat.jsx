@@ -4,7 +4,8 @@ import SendMessage from "../components/SendMessage";
 import ChatTopRibbon from "../components/ChatTopRibbon";
 import MessageSendRow from "../components/MessageSendRow";
 import MessageReceivedRow from "../components/MessageReceivedRow";
-import { useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { handleError } from "../helpers/toastHelpers";
 import { getSocket } from "../helpers/socket";
 import { getUserAllPreviousChatsWithFriend } from "../helpers/userHelpers";
@@ -25,17 +26,21 @@ function Chat() {
 
   useEffect(() => {
     const main = async () => {
-      const previousChatsWithFriend = await getUserAllPreviousChatsWithFriend(
-        friendUsername
-      );
-
-      if (previousChatsWithFriend.status) {
-        const data = previousChatsWithFriend.data;
-        setUserChats(data.chats);
-        setReceiverProfilePicture(data.friendProfilePicture);
-        setSenderProfilePicture(data.myProfilePicture);
-      } else {
-        handleError(previousChatsWithFriend.message);
+      try {
+        const previousChatsWithFriend = await getUserAllPreviousChatsWithFriend(
+          friendUsername
+        );
+  
+        if (previousChatsWithFriend.status) {
+          const data = previousChatsWithFriend.data;
+          setUserChats(data.chats);
+          setReceiverProfilePicture(data.friendProfilePicture);
+          setSenderProfilePicture(data.myProfilePicture);
+        } else {
+          handleError(previousChatsWithFriend.message);
+        }
+      } catch (error) {
+        handleError(error.message)
       }
     };
 
@@ -145,6 +150,7 @@ function Chat() {
           setMessage={setMessage}
         />
       </div>
+      <ToastContainer />
     </BaseLayout>
   );
 }

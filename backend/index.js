@@ -5,14 +5,19 @@ const {Server} =  require('socket.io');
 const app  =   express();
 require('dotenv').config();
 const db  = require('./config/db');
+const  path = require('path')
+
+app.use(cors({
+    origin: process.env.ALLOWED_ORIGIN,
+    methods: ["GET","POST"],
+}))
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use(cors({
-    origin: process.env.ALLOWED_ORIGIN,
-    methods: ["POST"],
-}))
+app.use('/user',express.static(path.join(__dirname,'public/assets/images/profilePicture')));
+app.use('/group',express.static(path.join(__dirname,'public/assets/images/groupPicture')));
+
 
 const server = http.createServer(app);
 const io = new Server(server, {

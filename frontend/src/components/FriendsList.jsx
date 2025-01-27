@@ -1,5 +1,6 @@
 import React from "react";
 import { handleError } from "../helpers/toastHelpers";
+import {getPicturePath}  from  "../helpers/commonHelper";
 
 function FriendsList({picture,name,username,setMembersFn,currentMembers,isGroupNameSet}) {
 
@@ -24,7 +25,7 @@ function FriendsList({picture,name,username,setMembersFn,currentMembers,isGroupN
       <div className="twoSectionLayout mb-3   pb-2  border-b  border-gray-400  flex  items-center justify-between">
         <div className="leftSection flex  gap-3 items-center">
           <img
-            src={(picture &&  `/src/assets/images/profilePicture/${picture}`)  || "/src/assets/images/user.jpg"}
+            src={(picture &&  getPicturePath(picture,'user'))  || getPicturePath()}
             alt="user"
             className="w-10 h-10  rounded-full  object-cover"
           />

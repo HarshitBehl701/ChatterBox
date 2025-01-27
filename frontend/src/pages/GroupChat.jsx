@@ -2,14 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import BaseLayout from "../layouts/BaseLayout";
 import SendMessage from "../components/SendMessage";
 import GroupChatRibbon from "../components/GroupChatRibbon";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { handleError } from "../helpers/toastHelpers";
 import GroupMessageReceivedRow from "../components/GroupMessageReceivedRow";
 import GroupMessageSendRow from "../components/GroupMessageSendRow";
 import { getSocket } from "../helpers/socket";
 import { getGroupPreviousChats } from "../helpers/groupHelpers";
+import { ToastContainer } from "react-toastify";
 
 function GroupChat() {
+  const navigate = useNavigate();
   const socket = getSocket("group");
   const [groupId, setGroupId] = useState(null);
   const [groupMessages, setGroupMessages] = useState([]); //for  fetching previous chats in this group
@@ -29,6 +31,7 @@ function GroupChat() {
         setGroupId(groupChatsRespone.data.groupId);
         setGroupPicture(groupChatsRespone.data.picture);
       } else {
+        navigate('/groups');
         handleError(groupChatsRespone.message);
       }
     };
@@ -78,6 +81,7 @@ function GroupChat() {
     });
     setMessage("");
   };
+
 
   return (
     <BaseLayout>
@@ -147,6 +151,7 @@ function GroupChat() {
           isSendMessageBtnHidden={isSendMessageBtnHidden}
         />
       </div>
+      <ToastContainer />
     </BaseLayout>
   );
 }

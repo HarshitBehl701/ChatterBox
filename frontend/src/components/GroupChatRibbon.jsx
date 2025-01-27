@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import {getPicturePath}  from  "../helpers/commonHelper";
 
 function GroupChatRibbon({groupname,groupPicture}) {
   return (
@@ -18,7 +19,7 @@ function GroupChatRibbon({groupname,groupPicture}) {
       <Link to={`/group_detail/${encodeURIComponent(groupname)}`}>
     <div className="userDetail flex gap-4 items-center">
       <img
-        src={(groupPicture   && `/src/assets/images/groupPicture/${groupPicture}`)   ||  "/src/assets/images/user.jpg"}
+        src={(groupPicture   && getPicturePath(groupPicture,'group'))   ||  getPicturePath()}
         alt="user"
         className="w-10   h-10 rounded-full"
       />

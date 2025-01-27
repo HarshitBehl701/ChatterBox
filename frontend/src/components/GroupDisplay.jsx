@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import  {getPicturePath}  from  "../helpers/commonHelper";
 
 function GroupDisplay({data}) {
   return (
@@ -7,7 +8,7 @@ function GroupDisplay({data}) {
     <div className="userCont shrink-0 relative flex flex-col  items-center justify-center">
       <div className="relative">
       <img
-        src={(data?.groupPicture &&  `/src/assets/images/groupPicture/${data?.groupPicture}`) ||   "/src/assets/images/user.jpg"}
+        src={(data?.groupPicture &&  getPicturePath(data?.groupPicture,'group')) ||   getPicturePath()}
         alt="user"
         className="w-20  h-20 rounded-full  border-2  border-gray-400"
       />

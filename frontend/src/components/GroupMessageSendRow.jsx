@@ -1,4 +1,5 @@
 import React from 'react'
+import  {getPicturePath} from  "../helpers/commonHelper";
 
 function GroupMessageSendRow({message,username,picture}) {
   return (
@@ -13,7 +14,7 @@ function GroupMessageSendRow({message,username,picture}) {
       </div>
     </div>
       <img
-        src={(picture  &&  `/src/assets/images/profilePicture/${picture}`) ||  "/src/assets/images/user.jpg"}
+        src={(picture  &&  getPicturePath(picture,'user')) || getPicturePath()}
         alt="user"
         className="w-12 h-12 rounded-full object-cover self-end"
       />

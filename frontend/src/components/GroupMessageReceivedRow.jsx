@@ -1,10 +1,11 @@
 import React from 'react'
+import  {getPicturePath}  from  "../helpers/commonHelper";
 
 function GroupMessageReceivedRow({message,username,picture}) {
   return (
     <div className="flex gap-4 items-center my-2">
       <img
-        src={(picture  &&  `/src/assets/images/profilePicture/${picture}`) ||  "/src/assets/images/user.jpg"}
+        src={(picture  &&  getPicturePath(picture,'user')) || getPicturePath()}
         alt="user"
         className="w-12 h-12 rounded-full object-cover self-end"
       />

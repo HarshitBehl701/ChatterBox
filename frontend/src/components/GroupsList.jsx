@@ -1,6 +1,7 @@
 import React from "react";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
 import { addJoinRequestByUser } from "../helpers/groupHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function GroupsList({ data }) {
   const addGroupJoinRequestBtnEvent = async (e) => {
@@ -22,9 +23,8 @@ function GroupsList({ data }) {
         <div className="leftSection flex  gap-3 items-center">
           <img
             src={
-              (data.picture &&
-                `/src/assets/images/groupPicture/${data.picture}`) ||
-              "/src/assets/images/user.jpg"
+              (data.picture && getPicturePath(data.picture,'group')) ||
+              getPicturePath()
             }
             alt="user"
             className="w-10 h-10  rounded-full"

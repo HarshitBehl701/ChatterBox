@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { handleError, handleSuccess } from "../helpers/toastHelpers";
 import { updateGroupImage } from "../helpers/groupHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
 
 function GroupProfilePicture({ isCurrentUserIsAdmin, picture, groupName }) {
   const [preview, setPreview] = useState(null);
@@ -38,8 +39,8 @@ function GroupProfilePicture({ isCurrentUserIsAdmin, picture, groupName }) {
         <img
           src={
             preview ||
-            (picture && `/src/assets/images/groupPicture/${picture}`) ||
-            "/src/assets/images/user.jpg"
+            (picture && getPicturePath(picture,'group')) ||
+            getPicturePath()
           }
           alt="user"
           className="w-full h-full object-cover"

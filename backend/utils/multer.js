@@ -4,9 +4,9 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === 'profilePicture') {
-      storagePath = "../frontend/src/assets/images/profilePicture";
+      storagePath = "./public/assets/images/profilePicture";
     } else if (file.fieldname === 'groupPicture') {
-      storagePath = "../frontend/src/assets/images/groupPicture";
+      storagePath = "./public/assets/images/groupPicture";
     } else {
       cb(new Error('Invalid field name'), false);
     }

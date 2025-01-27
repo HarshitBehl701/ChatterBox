@@ -1,4 +1,5 @@
 import React from 'react'
+import {getPicturePath}  from "../helpers/commonHelper";
 
 function MessageSendRow({message,profilePicture}) {
   return (
@@ -10,7 +11,7 @@ function MessageSendRow({message,profilePicture}) {
         <div className="absolute top-3 right-[-8px] w-4 h-4 bg-gray-100 rotate-45"></div>
       </div>
       <img
-        src={(profilePicture &&  `/src/assets/images/profilePicture/${profilePicture}`) || "/src/assets/images/user.jpg"}
+        src={(profilePicture &&  getPicturePath(profilePicture,'user')) || getPicturePath()}
         alt="user"
         className="w-12 h-12 rounded-full"
       />

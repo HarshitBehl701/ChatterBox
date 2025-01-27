@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useState } from "react";
 import { getAllUsersList } from "../helpers/userHelpers";
+import { getPicturePath } from "../helpers/commonHelper";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SearchUser({ midScreen }) {
+  const location  = useLocation();
+  const  navigate  =  useNavigate();
   const [searchText, setSearchText] = useState("");
   const [usersData, setUsersData] = useState([]);
+  const [isDropdownOpen,setIsDropDownOpen] =  useState(false);
 
   const filteredUsers = usersData.filter(
     (user) =>
@@ -14,6 +18,7 @@ function SearchUser({ midScreen }) {
 
   const handleInputChange = (e) => {
     setSearchText(e.target.value);
+    setIsDropDownOpen(true);
   };
 
   const handleInputClickEvent = async () => {
@@ -22,6 +27,12 @@ function SearchUser({ midScreen }) {
       setUsersData(response.data);
     }
   };
+
+  const handleUserProfileVisitBtn = useCallback((username)  =>  {
+    setIsDropDownOpen(false);
+    setSearchText('')
+    navigate(`/profile/${encodeURIComponent(username)}`);
+  },[location])
 
   return (
     <div
@@ -61,28 +72,25 @@ function SearchUser({ midScreen }) {
         value={searchText}
         onChange={handleInputChange} // Track input changes
         onClick={handleInputClickEvent}
+        autoComplete="off"
       />
       {/* Conditionally render the "search results" div */}
-      {searchText && (
+      {isDropdownOpen && (
         <div className="mt-2 p-4 border absolute md:w-80 w-full rounded-lg bg-gray-50 dark:bg-gray-700 dark:text-white">
           <p className="text-sm">
             Showing results for: <strong>{searchText}</strong>
           </p>
-          <ul className="mt-2 space-y-1">
+          <ul className="mt-2 space-y-1  max-h-[200px]  overflow-y-auto scrollbar-hidden">
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user, index) => (
-                <Link
-                  to={`/profile/${encodeURIComponent(user.username)}`}
-                  key={index}
-                >
-                  <li className="p-2 bg-gray-200 dark:bg-gray-600 rounded-lg">
+                <li   key={index} className="p-2 border-b  border-gray-500  mb-2 hover:bg-gray-600 hover:rounded-md" onClick={() =>  {handleUserProfileVisitBtn(user.username)}}>
                     <div className="twoSectionLayout  flex  items-center gap-3">
                       <div className="leftSection">
                         <img
                           src={
                             (user?.picture &&
-                              `/src/assets/images/profilePicture/${user?.picture}`) ??
-                            "/src/assets/images/user.jpg"
+                              getPicturePath(user?.picture,'user')) ??
+                            getPicturePath()
                           }
                           alt="userProfile"
                           className="w-8  h-8  rounded-full"
@@ -96,7 +104,6 @@ function SearchUser({ midScreen }) {
                       </div>
                     </div>
                   </li>
-                </Link>
               ))
             ) : (
               <li className="p-2 text-gray-500 dark:text-gray-400">

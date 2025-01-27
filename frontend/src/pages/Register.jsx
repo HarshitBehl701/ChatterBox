@@ -40,7 +40,7 @@ const Register = () => {
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 text-gray-100 rounded-lg shadow-md">
       <div className="header flex  justify-between items-center">
         <div className="brandHeader flex items-center gap-4">
-        <img src="/src/assets/images/logo.jpg" alt="logo" className="w-12 h-12 rounded-full" />
+        <img src="/assets/images/logo.jpg" alt="logo" className="w-12 h-12 rounded-full" />
         <h1   className="font-bold  text-2xl"><span  className="text-cyan-400">Chatter</span><span  className="text-pink-400">Box</span></h1>
         </div>
         <h2 className="text-2xl font-semibold text-center">Register</h2>
