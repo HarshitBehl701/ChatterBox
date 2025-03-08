@@ -1,6 +1,4 @@
 import express from 'express';
-import { Request, Response, NextFunction } from 'express';
-import { Schema } from 'joi';
 
 // Controllers
 import { registerUser, loginUser, getChatsData, getUserAllGroups, logoutUser, updateUser, getUserDetails, getAllActiveUsersList, manageFriendRequest, removeFriend, addFriend, getUserAllFriendRequests } from '../controllers/UserController';
