@@ -67,6 +67,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         const loginToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
         const clientToken = jwt.sign({}, getRandomString(6));
 
+        const allowed_domain = process.env.ALLOWED_ORIGIN;
+
         user.status = 'online';
         await user.save();
 
@@ -75,6 +77,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
             secure: true,
             sameSite: 'none',
             maxAge: 86400000, // 24 hours
+            domain: allowed_domain, // If needed
+            path: "/"
         });
 
         res.status(200).json(responseStructure(true, "User Login Successfully", { token: clientToken, user }));
