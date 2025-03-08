@@ -72,8 +72,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
         res.cookie('ULOGINTOKEN', loginToken, {
             httpOnly: true,
-            secure: false,
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'none',
             maxAge: 86400000, // 24 hours
         });
 
