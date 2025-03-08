@@ -8,7 +8,7 @@ import { validateSchema } from "@/validations/validateSchema";
 import { registerUserValidationSchema } from "@/validations/schemas/userSchemas";
 import { handleCatchErrors, handleToastPopup } from "@/utils/commonUtils";
 import { register } from "@/api/userApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 export default function RegisterPage() {
@@ -111,6 +111,7 @@ export default function RegisterPage() {
             </div>
             <Button type="submit" className="w-full">Register</Button>
           </form>
+          <Link  to={'/login'} className="text-center block text-xs hover:underline mt-2 text-blue-500">Don't have  an account?</Link>
         </CardContent>
       </Card>
       <ToastContainer />

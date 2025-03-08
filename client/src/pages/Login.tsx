@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { login } from "@/api/userApi";
 import { ILoginUserResponse } from "@/interfaces/apiInterfaces";
 import { useUserContext } from "@/contexts/userContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -89,6 +89,7 @@ export default function LoginPage() {
             </div>
             <Button type="submit" className="w-full">Login</Button>
           </form>
+          <Link  to={'/register'} className="text-center block text-xs hover:underline mt-2 text-blue-500">Already A  User?</Link>
         </CardContent>
       </Card>
       <ToastContainer />
