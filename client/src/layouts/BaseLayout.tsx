@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 export default function BaseLayout({children}:{children:ReactNode}) {
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-[100dvh] w-full">
       {/* Sidebar */}
       <SideNavbar />
 
