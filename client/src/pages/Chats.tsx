@@ -39,20 +39,7 @@ export default function Chats() {
       };
   
       setMessages((prev) => (prev ? [...(prev as IChatModal[]), newMsg] : [newMsg]));
-    } else if (type?.includes("group") && Array.isArray(messages)) {
-      const newMsg: IGroupChatModal = {
-        sender_user_id: userData as IUserModal,
-        group_id: mainData as IGroupModal,
-        message: newMessage,
-        status: "sent",
-        is_active: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setMessages((prev) => (prev ? [...(prev as IGroupChatModal[]), newMsg] : [newMsg]));
     }
-
-
     //sockets
     if(type && type.includes('user'))
       sendUserMessage(newMessage,mainData as IUserModal)
@@ -173,14 +160,16 @@ export default function Chats() {
                 className={`flex ${(type?.includes('user') ? ((msg as  IChatModal).receiver_unique_id._id  === userData?._id ? 'justify-start' : 'justify-end') : (type?.includes('group') ? ((msg as  IGroupChatModal).sender_user_id._id  === userData?._id ? 'justify-end' : 'justify-start') : ""))}`}
                 ref={divRef}
                 >
-
-                <div
-                  className={`p-3 rounded-lg max-w-xs ${
-                    type?.includes('user') ? ((msg as  IChatModal).receiver_unique_id._id  === userData?._id ? 'bg-gray-200 text-black' : 'bg-blue-500 text-white') : (type?.includes('group') ? ((msg as  IGroupChatModal).sender_user_id._id  === userData?._id ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black') : "")
-                  }`}
-                >
-                  {msg.message}
-                </div>
+                  <div>
+                    <p className="text-xs text-gray-400 ml-2  font-semibold">{type?.includes('group') && ((msg as  IGroupChatModal).sender_user_id._id  !== userData?._id) && (msg as   IGroupChatModal).sender_user_id.username}</p>
+                    <div
+                    className={`p-3 rounded-lg max-w-xs ${
+                      type?.includes('user') ? ((msg as  IChatModal).receiver_unique_id._id  === userData?._id ? 'bg-gray-200 text-black' : 'bg-blue-500 text-white') : (type?.includes('group') ? ((msg as  IGroupChatModal).sender_user_id._id  === userData?._id ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black') : "")
+                    }`}
+                  >
+                    {msg.message}
+                  </div>
+                  </div>
               </div>
             ))}
             {!messages || !(Array.isArray(messages) && messages.length  > 0) && <p className="italic">No  Chats Yet...</p>}
