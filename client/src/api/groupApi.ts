@@ -1,4 +1,4 @@
-import { ICreateNewGroup, IGetGroupChats, IGetGroupRequest, IManageGroupRequestsByAdmin, IManageGroupRequestsByUser, IUpdateGroup } from "@/interfaces/apiInterfaces";
+import { ICreateNewGroup, IGetGroupChats, IGetGroupRequest, ILeaveGroup, IManageGroupRequestsByAdmin, IManageGroupRequestsByUser, IUpdateGroup } from "@/interfaces/apiInterfaces";
 import { apiInstance, groupRouters, handleApiResponse, handleCatchErrorsOfApi } from "./baseApi";
 import { AxiosResponse } from "axios";
 
@@ -83,6 +83,15 @@ export const manageGroupRequestsByAdmin = async (data:IManageGroupRequestsByAdmi
 export const getGroupChats = async (data:IGetGroupChats)  => {
     try {
         const response = await axiosApi.post(groupRouters['getGroupChats'],data) as AxiosResponse;
+        return   handleApiResponse(response);
+    } catch (error) {
+        return  handleCatchErrorsOfApi(error);
+    }
+}
+
+export const leaveGroupForUser = async (group_id:ILeaveGroup['group_id'])  => {
+    try {
+        const response = await axiosApi.post(groupRouters['leaveGroupForUser'],{group_id:group_id}) as AxiosResponse;
         return   handleApiResponse(response);
     } catch (error) {
         return  handleCatchErrorsOfApi(error);

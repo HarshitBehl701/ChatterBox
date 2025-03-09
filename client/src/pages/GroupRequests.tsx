@@ -88,7 +88,7 @@ export default function GroupRequests() {
             />
           </div>
           {/* Chat Details */}
-          <div className="flex  flex-wrap items-center gap-2">
+          <div className="flex  flex-wrap items-center justify-between  w-full gap-2">
           <div className="flex-1">
             <p className="text-sm text-gray-500 truncate">{
               data.request_by == 'group' && data.groupId.adminUserId._id  ===  userData?._id ? data.userId.name :  data.groupId.name

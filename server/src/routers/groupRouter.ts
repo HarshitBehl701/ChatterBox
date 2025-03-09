@@ -1,11 +1,11 @@
 import express from 'express';
 
 // Controllers
-import { createGroup, manageGroupRequestsByAdmin, manageGroupRequestsByUser, getGroupChats, getGroupsList, makeGroupJoinRequest, getGroupAllRequestsForGroupAdmin, updateGroupData, getUserAllGroupsJoinRequests } from '../controllers/GroupController';
+import { createGroup, manageGroupRequestsByAdmin, manageGroupRequestsByUser, getGroupChats, getGroupsList, makeGroupJoinRequest, getGroupAllRequestsForGroupAdmin, updateGroupData, getUserAllGroupsJoinRequests, leaveGroupForUser } from '../controllers/GroupController';
 
 // Middlewares
 import validate from '../middlewares/validate';
-import { createGroupSchemaValidation, manageGroupRequestsByAdminSchemaValidation, manageGroupRequestsByUserSchemaValidation, getGroupChatsSchemaValidation, groupJoinRequestSchemaValidation, updateGroupSchemaValidation } from '../validations/groupValidation';
+import { createGroupSchemaValidation, manageGroupRequestsByAdminSchemaValidation, manageGroupRequestsByUserSchemaValidation, getGroupChatsSchemaValidation, groupJoinRequestSchemaValidation, updateGroupSchemaValidation, leaveGroupForUserSchemaValidation } from '../validations/groupValidation';
 import authMiddleware from '../middlewares/authMiddleware';
 import { upload, handleMulterErrors } from '../middlewares/multer';
 
@@ -20,6 +20,7 @@ router.post('/manage_group_requests_by_admin', authMiddleware, validate(manageGr
 router.post('/get_group_chats', authMiddleware, validate(getGroupChatsSchemaValidation), getGroupChats);
 router.post('/make_group_join_request', authMiddleware, validate(groupJoinRequestSchemaValidation), makeGroupJoinRequest);
 router.post('/manage_group_requests_by_user', authMiddleware, validate(manageGroupRequestsByUserSchemaValidation), manageGroupRequestsByUser);
+router.post('/leave_group_by_user', authMiddleware, validate(leaveGroupForUserSchemaValidation), leaveGroupForUser);
 router.post('/get_groups_list', authMiddleware, getGroupsList);
 
 export default router;

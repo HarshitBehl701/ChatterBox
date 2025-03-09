@@ -274,6 +274,30 @@ export const manageGroupRequestsByUser = async (req: Request, res: Response): Pr
   }
 };
 
+export const leaveGroupForUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { group_id } = req.body;
+
+    const user = (req as any).user as IUser;
+
+    const group = await GroupModal.findOne({ _id: group_id,members: user._id, is_active: 1 });
+
+    if (!group) {
+      res.status(404).json(responseStructure(false, "Group Not Found"));
+      return;
+    }
+
+    const groupMembers  = group.members;
+
+    group.members  = groupMembers.filter((member) => (member as mongoose.Types.ObjectId).toString()  !==  (user._id as mongoose.Types.ObjectId).toString());
+    await  group.save();
+
+    res.status(200).json(responseStructure(true, "Successfully leave  group"));
+  } catch (error) {
+    res.status(500).json(responseStructure(false, handleCatchErrorResponse(error)));
+  }
+};
+
 export const getGroupChats = async (req: Request, res: Response): Promise<void> => {
   try {
     const { group_id } = req.body as { group_id: string };

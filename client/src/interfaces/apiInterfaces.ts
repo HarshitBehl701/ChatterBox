@@ -82,6 +82,10 @@ export interface IGetGroupChats{
     group_id:string;
 }
 
+export  interface   ILeaveGroup{
+    group_id:string;
+}
+
 export  interface  IGetGroupJoinRequest{
     groupId:string;
 }

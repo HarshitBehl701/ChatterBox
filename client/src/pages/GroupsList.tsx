@@ -87,7 +87,7 @@ export default function GroupsList() {
       {/* Chat List */}
       <div className="space-y-4 h-full  overflow-y-auto">
         {Array.isArray(groups) && groups.map((group) => (
-          <Link key={Math.random()}  to={`/group/${encodeURIComponent(group.name)}/chats`} state={group}>
+          <Link key={Math.random()}  to={`/group/${encodeURIComponent(group.name)}/chats`} state={group} className="block">
             <div  className="flex items-center space-x-4 p-3 bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-900">
               {/* Avatar */}
               <div className="image relative">

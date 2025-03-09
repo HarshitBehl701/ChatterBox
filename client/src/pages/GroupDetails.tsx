@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import CardComponent from "@/components/myComponents/CardComponent";
-import {getImagePathUrl} from "@/utils/commonUtils";
+import {getImagePathUrl, handleCatchErrors, handleToastPopup} from "@/utils/commonUtils";
 import { Dot } from "lucide-react";
 import { IGroupModal,IGroupRequestsModal} from "@/interfaces/commonInterface";
 import { ToastContainer } from "react-toastify";
@@ -13,6 +13,7 @@ import { useUtilsContext } from "@/contexts/utilsContext";
 import { useUserContext } from "@/contexts/userContext";
 import EditGroup from "@/components/myComponents/EditGroup";
 import GroupMembers from "@/components/myComponents/GroupMembers";
+import { leaveGroupForUser } from "@/api/groupApi";
 
 function GroupDetails() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function GroupDetails() {
   const [isUserAlreadyAGroupMember,setIsUserAlreadyAGroupMember] = useState<boolean |  null>(null);
   const [isGroupJoinRequestPending,setIsGroupJoinRequestPending] = useState<IGroupRequestsModal   |null>(null);
   const {userData} = useUserContext();
+  const navigate  = useNavigate();
 
   useEffect(()=>{
     if(isUserAlreadyAGroupMember  ==  null)
@@ -38,6 +40,24 @@ function GroupDetails() {
     else if(isGroupJoinRequestPending == null)
         (async () => {setIsGroupJoinRequestPending(await  (isUserGroupJoinRequestPending(pageData._id)))})();
   },[isGroupJoinRequestPending,userData,isUserAGroupMember,isUserAlreadyAGroupMember,isUserGroupJoinRequestPending,pageData]);
+
+  const leaveGroup = useCallback(async () => {
+    if(pageData)
+    {
+      try {
+        const  response   = await leaveGroupForUser(pageData._id);
+        if(response.status)
+        {
+          handleToastPopup({message:"successfully leave group",type:'success'});
+          setTimeout(()=>navigate('/groups'),500);
+          setTimeout(()=>window.location.reload(),800);
+        }else
+          handleToastPopup({message:(response.message),type:"error"});
+      } catch (error) {
+        handleToastPopup({message:handleCatchErrors(error),type:"error"});
+      }
+    }
+  },[pageData,navigate]);
 
   if (!pageData || Object.keys(pageData).length === 0) {
     return <CardComponent />;
@@ -76,9 +96,10 @@ function GroupDetails() {
               </div>
               <CardTitle className="text-xl mt-2 flex flex-col items-center  gap-2">
                 <p className="text-center">{pageData.name}</p>
-                {isUserAlreadyAGroupMember && (
+                {isUserAlreadyAGroupMember && <>
                   <Badge>Member</Badge>
-                )}
+                  <Button  onClick={leaveGroup} size={'sm'} className="bg-red-500 text-xs hover:bg-red-600 cursor-pointer">Leave  Group</Button>
+                </>}
                 {pageData.adminUserId && pageData.adminUserId._id.includes(userData?._id as  string) && (
                   <Badge   className="bg-purple-500">Admin</Badge>
                 )}

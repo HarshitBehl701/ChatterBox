@@ -69,4 +69,6 @@ export const groupRouters:Record<string,string> = {
     'makeGroupJoinRequest':'make_group_join_request',   
     'manageGroupRequestsByUser':'manage_group_requests_by_user',   
     'getGroupsList':'get_groups_list',   
+    'leaveGroupForUser':'leave_group_by_user'
+    
 }

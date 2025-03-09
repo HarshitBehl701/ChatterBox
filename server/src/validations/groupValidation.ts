@@ -26,6 +26,10 @@ const manageGroupRequestsByUserSchemaValidation = Joi.object({
     status: Joi.string().valid('accepted', 'rejected').required(),
 });
 
+const leaveGroupForUserSchemaValidation = Joi.object({
+    group_id: Joi.string().required()
+})
+
 const getGroupChatsSchemaValidation = Joi.object({
     group_id: Joi.string().required(),
 });
@@ -39,6 +43,7 @@ export {
     updateGroupSchemaValidation,
     manageGroupRequestsByAdminSchemaValidation,
     manageGroupRequestsByUserSchemaValidation,
+    leaveGroupForUserSchemaValidation,
     getGroupChatsSchemaValidation,
     groupJoinRequestSchemaValidation,
 };

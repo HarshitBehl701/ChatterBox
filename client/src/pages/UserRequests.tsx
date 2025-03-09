@@ -76,7 +76,7 @@ export default function UserRequests() {
                 />
               </div>
               {/* Chat Details */}
-              <div className="flex   gap-2 flex-wrap items-center">
+              <div className="flex   gap-2 flex-wrap items-center justify-between  w-full">
               <div className="flex-1">
                 <p className="font-medium">{
                     data.request_sent_to_user_id._id ==  userData?._id  ?   
