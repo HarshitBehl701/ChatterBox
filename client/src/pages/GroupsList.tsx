@@ -38,7 +38,7 @@ export default function GroupsList() {
   },[userData,groups]);
   return (
     <div className="p-4 space-y-4">
-      <div className="header flex items-center justify-between   flex-wrap">
+      <div className="header flex items-center justify-between flex-wrap">
       <h1 className="capitalize text-2xl">Groups</h1>
       <SearchComponentGroupsUsers currentPage={'groups'} />
       </div>
@@ -76,12 +76,12 @@ export default function GroupsList() {
       <Separator />
 
       {/* Search Bar */}
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap-reverse  gap-3">
         <div className="buttons flex gap-3  items-center">
           <CreateGroup  />
           <Link to={'/group/requests'} className="text-sm text-blue-500 hover:text-blue-600 hover:underline">Group Requests</Link>
         </div>
-        <Input placeholder="Search..." className="w-1/3 min-w-[200px]" />
+        <Input placeholder="Search..." className="md:w-1/3 md:min-w-[200px] w-full" />
       </div>
 
       {/* Chat List */}

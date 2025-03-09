@@ -62,9 +62,9 @@ export default function UsersList() {
       <Separator />
 
       {/* Search Bar */}
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap-reverse gap-3">
         <Link to={'/friend/requests'} className="text-sm text-blue-500 hover:text-blue-600 hover:underline">Friend Requests</Link>
-        <Input placeholder="Search..." className="w-1/3 min-w-[200px]" />
+        <Input placeholder="Search..." className="md:w-1/3 md:min-w-[200px] w-full" />
       </div>
 
       {/* Chat List */}

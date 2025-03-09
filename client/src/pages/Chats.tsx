@@ -2,7 +2,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Dot, Send } from "lucide-react";
+import { ChevronLeft, Dot, Send } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IChatModal, IGroupChatModal, IGroupModal, IUserModal } from "@/interfaces/commonInterface";
@@ -132,10 +132,11 @@ export default function Chats() {
 
   return (
     <>
-        <Card className="flex flex-col bg-transparent border-0 outline-0 shadow-none   text-white h-full">
+        <Card className="flex bg-gray-800 flex-col rounded-none h-screen border-0 outline-0 shadow-none   text-white">
         <CardHeader className="cursor-pointer" onClick={() => navigate(`/${type}/${mainData.name}/details`,{state:mainData})}>
             {/* Left Side - Avatar */}
             <div className="flex items-center space-x-3">
+              <ChevronLeft onClick={()=> window.history.back()} />
             <div className="image relative">
                 <Avatar className="w-12 h-12">
                   <AvatarImage
