@@ -23,7 +23,7 @@ function SideNavbar() {
       </button>
       
       <div
-        className={`h-full bg-gray-900  overflow-hidden text-white flex flex-col items-center space-y-3 transition-transform duration-300 ${
+        className={`h-[100dvh] bg-gray-900  overflow-hidden text-white flex flex-col items-center space-y-3 transition-transform duration-300 ${
           isOpen ? "w-16 p-4" : "w-0  p-0"
         }`}
       >

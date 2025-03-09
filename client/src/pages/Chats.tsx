@@ -132,7 +132,7 @@ export default function Chats() {
 
   return (
     <>
-        <Card className="flex bg-gray-800 flex-col rounded-none h-screen border-0 outline-0 shadow-none   text-white">
+        <Card className="flex bg-gray-800 flex-col rounded-none h-[100dvh] border-0 outline-0 shadow-none   text-white">
         <CardHeader className="cursor-pointer" onClick={() => navigate(`/${type}/${mainData.name}/details`,{state:mainData})}>
             {/* Left Side - Avatar */}
             <div className="flex items-center space-x-3">
@@ -166,7 +166,7 @@ export default function Chats() {
             </div>
           </CardHeader>
           <Separator />
-          <CardContent className="flex-1 overflow-y-auto space-y-3 p-4">
+          <CardContent className="flex-1 overflow-y-auto space-y-3 p-4  min-h-0">
             {Array.isArray(messages)  &&  messages.length > 0 && messages.map((msg) => (
               <div
                 key={Math.random()}
