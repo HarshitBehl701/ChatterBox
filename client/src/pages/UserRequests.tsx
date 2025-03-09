@@ -76,6 +76,7 @@ export default function UserRequests() {
                 />
               </div>
               {/* Chat Details */}
+              <div className="flex   gap-2 flex-wrap items-center">
               <div className="flex-1">
                 <p className="font-medium">{
                     data.request_sent_to_user_id._id ==  userData?._id  ?   
@@ -103,6 +104,7 @@ export default function UserRequests() {
                     <Button className="text-xs p-2 h-fit  font-semibold bg-gray-800  hover:bg-gray-800   cursor-pointer"  onClick={() => manageFriendRequest(data,'rejected')}>Requested..</Button>
 
                 }
+              </div>
               </div>
             </div>
           </Link>

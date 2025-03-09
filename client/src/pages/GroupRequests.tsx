@@ -88,6 +88,7 @@ export default function GroupRequests() {
             />
           </div>
           {/* Chat Details */}
+          <div className="flex  flex-wrap items-center gap-2">
           <div className="flex-1">
             <p className="text-sm text-gray-500 truncate">{
               data.request_by == 'group' && data.groupId.adminUserId._id  ===  userData?._id ? data.userId.name :  data.groupId.name
@@ -107,8 +108,8 @@ export default function GroupRequests() {
                 (
                   data.request_by ===  'group' && data.userId._id == userData?._id  ?
                   <>
-                  <div className="flex gap-2">
-                  <Button  className="text-xs p-2 h-fit  font-semibold bg-green-600   hover:bg-green-700   cursor-pointer" onClick={() => manageGroupRequestForUser(data,'accepted')}>Accept Request</Button>
+                  <div className="flex gap-2 flex-wrap">
+                  <Button className="text-xs p-2 h-fit  font-semibold bg-green-600   hover:bg-green-700   cursor-pointer" onClick={() => manageGroupRequestForUser(data,'accepted')}>Accept Request</Button>
                   <Button  className="text-xs  p-2 h-fit font-semibold bg-red-500   hover:bg-red-600   cursor-pointer"  onClick={() => manageGroupRequestForUser(data,'rejected')}>Reject Request</Button>
                   </div>
                   </>
@@ -127,6 +128,7 @@ export default function GroupRequests() {
                 )
 
             }
+          </div>
           </div>
         </div>
         ))}
